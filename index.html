@@ -10,53 +10,57 @@
 <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#F7F3FF;
-    --card:#FFFFFF;
     --ink:#2D1B4E;
     --ink-soft:#6B5A88;
-    --line:#D9CFF0;
-    --pink:#FF4F8B;
-    --pink-soft:#FFE1EC;
-    --mint:#22B8A7;
-    --mint-soft:#D4F5F0;
-    --lemon:#FFD23F;
-    --lemon-soft:#FFF4C7;
+    --card:#FFFFFF;
+    --pink:#FF4F8B;  --pink-deep:#E0336F; --pink-soft:#FFE1EC; --pink-bg:#FFF1F6;
+    --mint:#22B8A7;  --mint-deep:#13917F; --mint-soft:#D4F5F0; --mint-bg:#EBFBF8;
+    --lemon:#FFD23F; --lemon-soft:#FFF4C7;
     --red:#E0373F;
-    --accent:var(--pink);
-    --accent-soft:var(--pink-soft);
     --overdue:#FFD9DC;
-    --soon:var(--lemon-soft);
     --donebg:#EEEAF6;
+    --accent:var(--pink); --accent-deep:var(--pink-deep); --accent-soft:var(--pink-soft); --bg:var(--pink-bg); --line:#F3C9D9;
   }
-  body.ev-0327{ --accent:var(--mint); --accent-soft:var(--mint-soft); }
+  body.ev-0327{ --accent:var(--mint); --accent-deep:var(--mint-deep); --accent-soft:var(--mint-soft); --bg:var(--mint-bg); --line:#B9E6DF; }
   *{box-sizing:border-box;}
   html{font-size:16px;}
   body{
-    margin:0; background:var(--paper); color:var(--ink);
+    margin:0; background-color:var(--bg); color:var(--ink);
     font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
     line-height:1.75; -webkit-font-smoothing:antialiased;
     background-image:radial-gradient(var(--line) 1.2px, transparent 1.2px);
     background-size:22px 22px;
+    transition:background-color .5s ease;
   }
   h1,h2,h3{margin:0; font-family:'Huninn','Noto Sans TC',sans-serif; font-weight:400; color:var(--ink);}
   .disp{font-family:'Shrikhand',cursive; font-weight:400;}
-  .wrap{max-width:1200px; margin:0 auto; padding:0 24px;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px; position:relative;}
   @media (max-width:480px){ .wrap{padding:0 16px;} }
   button{font-family:inherit; cursor:pointer;}
-  input,textarea{font-family:inherit; color:var(--ink);}
+  input,textarea,select{font-family:inherit; color:var(--ink);}
   :focus-visible{outline:3px solid var(--lemon); outline-offset:2px;}
 
-  /* 珍珠串：分隔線 */
-  .pearls{height:14px; background:radial-gradient(circle at 50% 50%, #fff 0 4px, #E6DCF7 4.5px 5.5px, transparent 6px) 0 0/16px 14px repeat-x; filter:drop-shadow(0 1px 0 rgba(45,27,78,.12));}
+  .pearls{height:14px; background:radial-gradient(circle at 50% 50%, #fff 0 4px, rgba(45,27,78,.18) 4.5px 5.5px, transparent 6px) 0 0/16px 14px repeat-x;}
 
-  /* ---------- 海報 hero ---------- */
-  header{padding:36px 0 28px;}
-  .poster{display:grid; grid-template-columns:1.25fr 1fr; gap:32px; align-items:start;}
+  /* ---------- 色帶 hero：整塊跟著場次換色 ---------- */
+  header{position:relative; overflow:hidden; padding:36px 0 32px; background:var(--accent); transition:background-color .5s ease;}
+  header::before{content:""; position:absolute; inset:0; background-image:radial-gradient(rgba(255,255,255,.28) 1.6px, transparent 1.6px); background-size:26px 26px; pointer-events:none;}
+  .floaters{position:absolute; inset:0; pointer-events:none; z-index:0;}
+  .fl{position:absolute; opacity:0; transition:opacity .6s ease; animation:drift var(--dur,9s) ease-in-out var(--delay,0s) infinite;}
+  body.ev-0306 .fl.s0306, body.ev-0327 .fl.s0327{opacity:var(--op,.85);}
+  @keyframes drift{
+    0%,100%{transform:translate(0,0) rotate(0deg);}
+    50%{transform:translate(var(--dx,10px), var(--dy,-22px)) rotate(var(--rot,20deg));}
+  }
+  .fl.pearl{width:var(--sz); height:var(--sz); border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff 0 35%, #F4EEF8 60%, #D8CDE6 100%); box-shadow:0 2px 4px rgba(45,27,78,.18);}
+  .fl.confetti{width:var(--sz); height:calc(var(--sz) * .45); border-radius:2px;}
+  .fl svg{display:block; width:var(--sz); height:auto;}
+  .poster{position:relative; z-index:1; display:grid; grid-template-columns:1.25fr 1fr; gap:32px; align-items:start;}
   @media (max-width:860px){ .poster{grid-template-columns:1fr;} }
-  .kicker{font-size:.95rem; color:var(--ink-soft); font-weight:500;}
-  .kicker b{color:var(--accent); font-weight:700;}
-  header h1{font-size:clamp(2.6rem,8vw,4.6rem); line-height:1.1; margin-top:6px; letter-spacing:.04em;}
-  header h1 .amp{font-family:'Shrikhand',cursive; color:var(--accent); font-size:.8em; padding:0 .12em; display:inline-block; transform:rotate(-8deg);}
+  .kicker{font-size:.95rem; color:var(--ink); font-weight:500;}
+  .kicker b{display:inline-block; white-space:nowrap; background:var(--ink); color:#fff; padding:1px 10px; border-radius:999px; font-weight:700; margin-left:6px;}
+  header h1{font-size:clamp(2.6rem,8vw,4.6rem); line-height:1.1; margin-top:8px; letter-spacing:.04em;}
+  header h1 .amp{font-family:'Shrikhand',cursive; color:#fff; font-size:.8em; padding:0 .12em; display:inline-block; transform:rotate(-8deg); text-shadow:3px 3px 0 var(--ink);}
   .tagline{margin-top:10px; font-size:1.05rem; max-width:34em;}
 
   .players{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px;}
@@ -66,31 +70,32 @@
   .player .name{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.35rem;}
   .player .role{font-size:.78rem; color:var(--ink-soft);}
   .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
-  .chip{font-size:.78rem; padding:2px 10px; border-radius:999px; background:var(--paper); border:1.5px solid var(--line);}
+  .chip{font-size:.78rem; padding:2px 10px; border-radius:999px; border:1.5px solid;}
   .player.groom .chip{border-color:#B6E9E2; background:var(--mint-soft);}
   .player.bride .chip{border-color:#FFC2D7; background:var(--pink-soft);}
 
-  .milestones{display:flex; gap:0; margin-top:22px; flex-wrap:wrap;}
-  .ms{position:relative; padding:0 18px 0 0; margin-bottom:8px; font-size:.82rem; color:var(--ink-soft);}
-  .ms::after{content:""; position:absolute; right:6px; top:.85em; width:6px; height:6px; border-radius:50%; background:var(--line);}
+  .milestones{display:flex; flex-wrap:wrap; gap:6px 0; margin-top:22px;}
+  .ms{position:relative; padding:0 22px 0 0; font-size:.82rem;}
+  .ms::after{content:""; position:absolute; right:8px; top:.8em; width:6px; height:6px; border-radius:50%; background:var(--ink); opacity:.4;}
   .ms:last-child::after{display:none;}
-  .ms b{display:block; color:var(--ink); font-size:.92rem;}
-  .ms.done b{text-decoration:line-through; text-decoration-color:var(--accent);}
+  .ms b{display:block; font-size:.95rem;}
+  .ms.done b{text-decoration:line-through; text-decoration-thickness:2px;}
+  .ms.now b{background:#fff; border:2px solid var(--ink); border-radius:999px; padding:0 10px;}
 
   /* 票根 = 場次切換 */
   .tickets{display:flex; flex-direction:column; gap:16px;}
   .ticket{
-    display:grid; grid-template-columns:1fr 112px; text-align:left; padding:0; width:100%;
+    position:relative; display:grid; grid-template-columns:1fr 112px; text-align:left; padding:0; width:100%;
     background:var(--card); color:var(--ink); border:2px solid var(--ink); border-radius:18px;
-    box-shadow:5px 5px 0 var(--ink); transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:5px 5px 0 var(--ink); transition:transform .2s ease, box-shadow .2s ease, background-color .3s ease;
   }
-  .ticket:hover{transform:translate(-1px,-1px); box-shadow:6px 6px 0 var(--ink);}
-  .ticket[aria-pressed="true"]{transform:rotate(-1.2deg);}
-  .ticket.t0306[aria-pressed="true"]{background:var(--pink); color:#fff;}
-  .ticket.t0327[aria-pressed="true"]{background:var(--mint); color:#fff;}
+  .ticket:hover{transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--ink);}
+  .ticket[aria-pressed="true"]{background:var(--ink); color:#fff; transform:rotate(-1.5deg) scale(1.02); box-shadow:6px 6px 0 #fff;}
   .ticket .main{padding:14px 18px;}
   .ticket .date{font-family:'Shrikhand',cursive; font-size:2.1rem; line-height:1.05;}
   .ticket .label{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.3rem; margin-left:6px;}
+  .ticket .swatch{display:inline-block; width:12px; height:12px; border-radius:50%; margin-left:8px; border:2px solid currentColor; vertical-align:2px;}
+  .ticket.t0306 .swatch{background:var(--pink);} .ticket.t0327 .swatch{background:var(--mint);}
   .ticket .meta{font-size:.82rem; opacity:.85; margin-top:4px;}
   .ticket .stub{border-left:2px dashed currentColor; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; text-align:center;}
   .ticket .days{font-family:'Shrikhand',cursive; font-size:2rem; line-height:1;}
@@ -99,27 +104,34 @@
   .ticket[aria-pressed="false"] .pick::before{content:"切換到這場";}
   .ticket[aria-pressed="true"] .pick::before{content:"正在看這場";}
 
-  .progress-box{margin-top:6px; background:var(--card); border:2px solid var(--ink); border-radius:14px; padding:12px 16px;}
+  .progress-box{margin-top:16px; background:var(--card); border:2px solid var(--ink); border-radius:14px; padding:12px 16px;}
   .progress-label{display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:6px;}
-  .progress-track{height:12px; border-radius:999px; background:var(--paper); border:1.5px solid var(--ink); overflow:hidden;}
+  .progress-track{height:12px; border-radius:999px; background:var(--bg); border:1.5px solid var(--ink); overflow:hidden;}
   .progress-fill{height:100%; background:repeating-linear-gradient(-45deg,var(--accent) 0 8px,var(--lemon) 8px 16px); transition:width .4s ease;}
   .photo-slot img{display:block; width:100%; border-radius:12px; border:2px solid var(--ink); margin-top:14px;}
 
+  /* 切換時的彩紙 */
+  .burst{position:fixed; width:10px; height:6px; border-radius:2px; pointer-events:none; z-index:200; animation:burst 1.2s cubic-bezier(.2,.7,.4,1) forwards;}
+  @keyframes burst{
+    0%{transform:translate(0,0) rotate(0); opacity:1;}
+    100%{transform:translate(var(--tx), var(--ty)) rotate(var(--r)); opacity:0;}
+  }
+
   /* ---------- tabs ---------- */
-  .tabnav-shell{position:sticky; top:0; z-index:30; background:rgba(247,243,255,.95); backdrop-filter:blur(6px); border-bottom:2px solid var(--ink);}
+  .tabnav-shell{position:sticky; top:0; z-index:30; background:var(--accent-soft); border-bottom:2px solid var(--ink); transition:background-color .5s ease;}
   .tabnav{display:flex; gap:8px; max-width:1200px; margin:0 auto; padding:10px 24px; overflow-x:auto; align-items:center;}
   .tab-btn{background:var(--card); border:2px solid var(--ink); border-radius:999px; padding:6px 16px; font-size:.9rem; color:var(--ink); white-space:nowrap;}
   .tab-btn.active{background:var(--ink); color:#fff;}
-  .ev-flag{margin-left:auto; white-space:nowrap; font-size:.82rem; padding:4px 12px; border-radius:999px; background:var(--accent); color:#fff; font-weight:700;}
-  .ev-flag.hide{visibility:hidden;}
+  .ev-flag{margin-left:auto; white-space:nowrap; font-size:.82rem; padding:4px 12px; border-radius:999px; background:var(--accent); color:#fff; font-weight:700; border:2px solid var(--ink);}
 
   .sync-bar{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 0; font-size:.8rem; color:var(--ink-soft);}
   .sync-bar.error{color:var(--red); font-weight:500;}
   #refreshBtn{border:1.5px solid var(--ink-soft); border-radius:999px; background:var(--card); padding:3px 14px; font-size:.78rem; color:var(--ink-soft);}
-  #refreshBtn:hover{border-color:var(--accent); color:var(--accent);}
+  #refreshBtn:hover{border-color:var(--accent-deep); color:var(--accent-deep);}
 
   .panel{display:none; padding:12px 0 60px;}
-  .panel.active{display:block;}
+  .panel.active{display:block; animation:panelIn .3s ease;}
+  @keyframes panelIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
   .section-head{margin-bottom:20px;}
   .section-head h2{font-size:1.7rem;}
   .section-head p{color:var(--ink-soft); margin:6px 0 0; font-size:.92rem; max-width:44em;}
@@ -128,39 +140,39 @@
   .checklist-legend{display:flex; gap:16px; flex-wrap:wrap; font-size:.8rem; color:var(--ink-soft); margin-bottom:14px;}
   .legend-dot{display:inline-block; width:12px; height:12px; border-radius:4px; margin-right:6px; vertical-align:-1px; border:1.5px solid var(--ink);}
   .phase-block{margin-bottom:22px; background:var(--card); border:2px solid var(--ink); border-radius:16px; box-shadow:4px 4px 0 var(--ink); overflow:hidden;}
-  .phase-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 20px; border-bottom:2px solid var(--ink); background:var(--accent-soft); flex-wrap:wrap;}
+  .phase-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 20px; border-bottom:2px solid var(--ink); background:var(--accent-soft); flex-wrap:wrap; transition:background-color .5s ease;}
   .phase-title{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.1rem;}
-  .phase-due{font-family:'Noto Sans TC',sans-serif; font-size:.78rem; color:var(--ink-soft); margin-left:6px;}
-  .phase-count{font-family:'Shrikhand',cursive; font-size:1rem; color:var(--ink);}
+  .phase-due{font-size:.78rem; color:var(--ink-soft); margin-left:8px;}
+  .phase-count{font-family:'Shrikhand',cursive; font-size:1rem;}
   .phase-block.all-done .phase-head{background:var(--donebg);}
   .task-row{display:flex; align-items:center; gap:10px; padding:10px 20px 4px; border-top:1px dashed var(--line); flex-wrap:wrap;}
   .phase-head + .task-row{border-top:none;}
-  .task-row input[type="checkbox"]{width:20px; height:20px; accent-color:var(--accent); flex:none; cursor:pointer;}
-  .task-category{flex:0 0 84px; width:84px; font-size:.76rem; padding:2px 8px; border:1.5px solid var(--ink); border-radius:999px; background:var(--lemon-soft); color:var(--ink); text-align:center;}
+  .task-row input[type="checkbox"]{width:20px; height:20px; accent-color:var(--accent-deep); flex:none; cursor:pointer;}
+  .task-category{flex:0 0 84px; width:84px; font-size:.76rem; padding:2px 8px; border:1.5px solid var(--ink); border-radius:999px; background:var(--lemon-soft); text-align:center;}
   .task-text{flex:1 1 220px; min-width:140px; font-size:.95rem; border:none; background:none; padding:4px 2px; border-radius:6px;}
-  .task-text:focus,.task-category:focus{background:var(--paper); outline:none;}
+  .task-text:focus,.task-category:focus{background:var(--bg); outline:none;}
   .task-row.done .task-text{color:var(--ink-soft); text-decoration:line-through;}
+  .shared-tag{font-size:.7rem; color:var(--ink-soft); border:1.5px dashed var(--ink-soft); border-radius:999px; padding:0 8px; white-space:nowrap;}
   .status-overdue{background:var(--overdue);}
-  .status-soon{background:var(--soon);}
+  .status-soon{background:var(--lemon-soft);}
   .status-done{background:var(--donebg);}
   .task-meta-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:0 20px 10px 50px;}
   .task-desc-inline{font-size:.82rem; color:var(--ink-soft); cursor:pointer; flex:1 1 auto; min-width:120px;}
-  .task-desc-inline:hover{color:var(--accent);}
+  .task-desc-inline:hover{color:var(--accent-deep);}
   .task-meta-row input{flex:1 1 200px; min-width:160px; font-size:.82rem; padding:5px 10px; border:1.5px solid var(--line); border-radius:8px; background:var(--card);}
   a.task-link-open{font-size:.76rem; color:#fff; background:var(--ink); padding:2px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}
-  a.task-link-open:hover{background:var(--accent);}
+  a.task-link-open:hover{background:var(--accent-deep);}
   .task-link-edit-toggle{font-size:.74rem; color:var(--ink-soft); background:none; border:1.5px dashed var(--line); border-radius:999px; padding:1px 10px; white-space:nowrap;}
-  .task-link-edit-toggle:hover{border-color:var(--accent); color:var(--accent);}
+  .task-link-edit-toggle:hover{border-color:var(--accent-deep); color:var(--accent-deep);}
   .task-del,.row-del{background:none; border:none; color:var(--ink-soft); font-size:.78rem; text-decoration:underline; white-space:nowrap;}
   .add-task-row{display:flex; gap:8px; padding:12px 20px; border-top:2px dashed var(--line); flex-wrap:wrap;}
-  .add-task-row input{flex:1; min-width:120px; padding:7px 12px; border:1.5px solid var(--line); border-radius:10px; background:var(--paper); font-size:.88rem;}
+  .add-task-row input{flex:1; min-width:120px; padding:7px 12px; border:1.5px solid var(--line); border-radius:10px; background:var(--bg); font-size:.88rem;}
   .btn-ink{padding:8px 18px; background:var(--ink); color:#fff; border:2px solid var(--ink); border-radius:999px; font-size:.86rem; font-weight:500;}
-  .btn-ink:hover{background:var(--accent); border-color:var(--accent);}
+  .btn-ink:hover{background:var(--accent-deep); border-color:var(--accent-deep);}
   .btn-ink:disabled{opacity:.45; cursor:default;}
   .btn-line{padding:6px 16px; border:2px solid var(--ink); border-radius:999px; background:var(--card); color:var(--ink); font-size:.84rem;}
   .btn-line:hover{background:var(--ink); color:#fff;}
 
-  /* ---------- 場次資訊卡 ---------- */
   .ev-card{display:flex; flex-wrap:wrap; gap:10px 28px; background:var(--accent-soft); border:2px solid var(--ink); border-radius:16px; padding:14px 20px; margin-bottom:18px; font-size:.9rem;}
   .ev-card .k{font-size:.76rem; color:var(--ink-soft); display:block;}
   .ev-card a{color:var(--ink);}
@@ -168,28 +180,26 @@
   /* ---------- tables ---------- */
   .table-wrap{background:var(--card); border:2px solid var(--ink); border-radius:16px; box-shadow:4px 4px 0 var(--ink); overflow-x:auto;}
   table.sheet{width:100%; border-collapse:collapse; table-layout:fixed;}
-  table.sheet th{text-align:left; font-size:.78rem; color:var(--ink); font-weight:700; padding:12px 10px; border-bottom:2px solid var(--ink); background:var(--accent-soft);}
+  table.sheet th{text-align:left; font-size:.78rem; font-weight:700; padding:12px 10px; border-bottom:2px solid var(--ink); background:var(--accent-soft); transition:background-color .5s ease;}
   table.sheet td{padding:6px 8px; border-top:1px dashed var(--line); vertical-align:top;}
   .cell{width:100%; min-height:1.6em; padding:6px; border-radius:6px; font-size:.86rem; white-space:pre-wrap; word-break:break-word; outline:none;}
-  .cell:focus{background:var(--paper); box-shadow:inset 0 0 0 1.5px var(--accent);}
+  .cell:focus{background:var(--bg); box-shadow:inset 0 0 0 1.5px var(--accent);}
   .cell.empty::before{content:attr(data-placeholder); color:var(--ink-soft); opacity:.5;}
   .cell.muted-value{color:var(--ink-soft); opacity:.5;}
-  .itin-time-cell{font-family:'Shrikhand',cursive; font-size:1rem; color:var(--accent); text-align:center;}
+  .itin-time-cell{font-family:'Shrikhand',cursive; font-size:1rem; color:var(--accent-deep); text-align:center;}
   .itin-process-cell{font-weight:700;}
   .add-row{padding:14px 0;}
   .seed-box{padding:30px 20px; text-align:center; color:var(--ink-soft); font-size:.9rem;}
-  .seed-box button{margin-top:12px;}
   @media (max-width:900px){ .table-wrap table{min-width:1000px;} }
-
   .tool-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px;}
   .tool-note{font-size:.78rem; color:var(--ink-soft);}
 
-  .props-checklist{border:2px dashed var(--accent); border-radius:16px; background:var(--card); padding:16px 20px; margin-top:24px;}
+  .props-checklist{border:2px dashed var(--accent-deep); border-radius:16px; background:var(--card); padding:16px 20px; margin-top:24px;}
   .props-checklist-head{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.15rem;}
   .props-checklist-sub{font-size:.8rem; color:var(--ink-soft); margin:2px 0 12px;}
   #propsList{display:flex; flex-wrap:wrap; gap:8px;}
-  .props-item{display:flex; align-items:center; gap:6px; background:var(--paper); border:1.5px solid var(--ink); border-radius:999px; padding:3px 12px; font-size:.86rem; cursor:pointer;}
-  .props-item input{width:15px; height:15px; accent-color:var(--accent);}
+  .props-item{display:flex; align-items:center; gap:6px; background:var(--bg); border:1.5px solid var(--ink); border-radius:999px; padding:3px 12px; font-size:.86rem; cursor:pointer;}
+  .props-item input{width:15px; height:15px; accent-color:var(--accent-deep);}
   .props-item.done{background:var(--donebg); border-color:var(--line);}
   .props-item.done span{color:var(--ink-soft); text-decoration:line-through;}
 
@@ -197,7 +207,7 @@
   .payments-gate{background:var(--card); border:2px solid var(--ink); border-radius:18px; box-shadow:5px 5px 0 var(--ink); padding:36px 28px; text-align:center; max-width:440px; margin:0 auto;}
   .payments-gate-text{color:var(--ink-soft); font-size:.92rem; margin:0 0 16px;}
   .payments-gate-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
-  .payments-gate-row input{padding:8px 14px; border:2px solid var(--ink); border-radius:999px; background:var(--paper); font-size:.9rem; width:180px;}
+  .payments-gate-row input{padding:8px 14px; border:2px solid var(--ink); border-radius:999px; background:var(--bg); font-size:.9rem; width:180px;}
   .payments-gate-err{color:var(--red); font-size:.82rem; margin-top:12px; display:none;}
   .payments-content{display:none;}
   .payments-content.open{display:block;}
@@ -210,7 +220,7 @@
   .payment-card{background:var(--card); border:2px solid var(--ink); border-radius:14px; padding:14px 18px; margin-bottom:10px; display:grid; grid-template-columns:24px 1fr auto; gap:8px 16px; align-items:start;}
   .payment-card.flagged{border-color:var(--red); box-shadow:3px 3px 0 var(--red);}
   .payment-card.confirmed{background:var(--donebg);}
-  .payment-card input[type="checkbox"]{width:20px; height:20px; margin-top:3px; accent-color:var(--accent);}
+  .payment-card input[type="checkbox"]{width:20px; height:20px; margin-top:3px; accent-color:var(--accent-deep);}
   .payment-name{font-weight:700;}
   .payment-role,.payment-contact{font-size:.8rem; color:var(--ink-soft);}
   .payment-note{font-size:.78rem; color:var(--red); border:1.5px solid var(--red); border-radius:999px; display:inline-block; padding:0 10px; margin-top:4px;}
@@ -221,16 +231,53 @@
   .payment-badge.pending{color:var(--red);} .payment-badge.after{color:var(--ink-soft);}
   @media (max-width:560px){ .payment-card{grid-template-columns:22px 1fr;} .payment-amount-block{grid-column:2/3; text-align:left;} }
 
+  /* ---------- 造型靈感 gallery ---------- */
+  .gal-filters{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
+  .gal-filter{border:2px solid var(--ink); border-radius:999px; background:var(--card); padding:3px 14px; font-size:.85rem;}
+  .gal-filter[aria-pressed="true"]{background:var(--accent); color:#fff;}
+  .gal-filter .n{opacity:.7; margin-left:4px; font-size:.78em;}
+  .gal-grid{columns:4 220px; column-gap:16px;}
+  .gal-item{break-inside:avoid; margin:0 0 16px; background:var(--card); border:2px solid var(--ink); border-radius:14px; box-shadow:4px 4px 0 var(--ink); overflow:hidden; cursor:zoom-in; display:block; width:100%; padding:0; text-align:left; transition:transform .2s ease, box-shadow .2s ease;}
+  .gal-item:hover{transform:translate(-2px,-2px) rotate(-.6deg); box-shadow:6px 6px 0 var(--ink);}
+  .gal-item img{display:block; width:100%; height:auto; min-height:80px; background:var(--accent-soft);}
+  .gal-cap{padding:8px 12px 10px; font-size:.85rem;}
+  .gal-cap .cat{font-size:.72rem; padding:0 8px; border-radius:999px; background:var(--lemon-soft); border:1.5px solid var(--ink); margin-right:6px;}
+  .gal-broken{padding:24px 12px; font-size:.78rem; color:var(--red); background:var(--overdue); text-align:center;}
+  .gal-empty{background:var(--card); border:2px dashed var(--ink); border-radius:16px; padding:22px 24px; font-size:.9rem;}
+  .gal-empty ul{margin:8px 0 0; padding-left:1.2em;}
+  .gal-add{margin-top:22px; background:var(--card); border:2px solid var(--ink); border-radius:16px; padding:16px 20px;}
+  .gal-add h3{font-size:1.15rem; margin-bottom:6px;}
+  .gal-add-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+  .gal-add-row input,.gal-add-row select{padding:7px 12px; border:1.5px solid var(--line); border-radius:10px; background:var(--bg); font-size:.88rem;}
+  .gal-add-row input[name=url]{flex:2 1 260px;} .gal-add-row input[name=title]{flex:1 1 140px;}
+  .gal-help{font-size:.78rem; color:var(--ink-soft); margin:6px 0 0;}
+
+  .lightbox{position:fixed; inset:0; z-index:300; background:rgba(45,27,78,.88); display:none; align-items:center; justify-content:center; padding:24px;}
+  .lightbox.open{display:flex; animation:panelIn .2s ease;}
+  .lb-inner{position:relative; max-width:min(1000px,100%); max-height:100%; display:flex; flex-direction:column; align-items:center;}
+  .lb-inner img{max-width:100%; max-height:calc(100vh - 160px); border-radius:12px; border:3px solid #fff; background:#fff; object-fit:contain;}
+  .lb-cap{color:#fff; margin-top:12px; text-align:center; font-size:.95rem;}
+  .lb-cap small{display:block; opacity:.75; font-size:.8rem;}
+  .lb-btn{position:fixed; top:50%; transform:translateY(-50%); width:52px; height:52px; border-radius:50%; border:2px solid #fff; background:var(--accent); color:#fff; font-size:1.5rem; line-height:1;}
+  .lb-prev{left:16px;} .lb-next{right:16px;}
+  .lb-close{position:fixed; top:16px; right:16px; border:2px solid #fff; background:none; color:#fff; border-radius:999px; padding:4px 16px; font-size:.9rem;}
+  .lb-tools{margin-top:8px; display:flex; gap:12px;}
+  .lb-tools a,.lb-tools button{color:#fff; font-size:.8rem; background:none; border:none; text-decoration:underline; opacity:.8;}
+  @media (max-width:600px){ .lb-btn{width:42px; height:42px; top:auto; bottom:18px; transform:none;} }
+
   .save-note{font-size:.8rem; color:var(--ink-soft); margin-top:14px;}
   footer{padding:30px 0 44px; text-align:center; font-size:.82rem; color:var(--ink-soft);}
-  footer .disp{display:block; font-size:1.5rem; color:var(--accent); margin-bottom:2px;}
+  footer .disp{display:block; font-size:1.5rem; color:var(--accent-deep); margin-bottom:2px;}
 
-  @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important;}
+    .burst{display:none;}
+  }
 
   .print-only{display:none;}
   @media print{
-    header, .tabnav-shell, .sync-bar, .section-head, .tool-row, .ev-card,
-    .props-checklist, .add-row, .save-note, footer, .row-del, .del-col, .pearls,
+    header, .tabnav-shell, .sync-bar, .section-head, .tool-row, .ev-card, .pearls,
+    .props-checklist, .add-row, .save-note, footer, .row-del, .del-col, .lightbox,
     .panel:not(#panel-itinerary){display:none !important;}
     #panel-itinerary{display:block !important; padding:0;}
     .print-only{display:block;}
@@ -243,11 +290,12 @@
 <body class="ev-0306">
 
 <header>
+  <div class="floaters" id="floaters" aria-hidden="true"></div>
   <div class="wrap poster">
     <div>
-      <div class="kicker">兩場午宴，一起來開趴　<b>Wedding Party Tour 2027</b></div>
+      <div class="kicker">兩場午宴，一起來開趴<b>Wedding Party Tour 2027</b></div>
       <h1><span id="hGroom">裕煒</span><span class="amp">&amp;</span><span id="hBride">惠婷</span></h1>
-      <p class="tagline">先跟家人吃一頓好的，再找朋友瘋一場。籌備進度、兩場流程、廠商與尾款，都在這一頁。</p>
+      <p class="tagline">先跟家人吃一頓好的，再找朋友瘋一場。籌備進度、兩場流程、廠商、尾款和造型照片，都在這一頁。</p>
 
       <div class="players">
         <div class="player groom">
@@ -265,8 +313,8 @@
 
     <div>
       <div class="tickets" id="tickets"></div>
-      <div class="progress-box" style="margin-top:16px;">
-        <div class="progress-label"><span>籌備進度</span><span id="progressPct">0%</span></div>
+      <div class="progress-box">
+        <div class="progress-label"><span id="progressLabel">籌備進度</span><span id="progressPct">0%</span></div>
         <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
       </div>
       <div class="photo-slot" id="photoSlot"></div>
@@ -274,15 +322,14 @@
   </div>
 </header>
 
-<div class="pearls" aria-hidden="true"></div>
-
 <div class="tabnav-shell">
   <nav class="tabnav">
     <button class="tab-btn active" data-tab="checklist">籌備檢核表</button>
     <button class="tab-btn" data-tab="itinerary">當天流程</button>
+    <button class="tab-btn" data-tab="gallery">造型照片</button>
     <button class="tab-btn" data-tab="vendors">廠商聯繫</button>
     <button class="tab-btn" data-tab="payments">廠商尾款</button>
-    <span class="ev-flag hide" id="evFlag"></span>
+    <span class="ev-flag" id="evFlag"></span>
   </nav>
 </div>
 
@@ -297,18 +344,18 @@
 
   <section class="panel active" id="panel-checklist">
     <div class="section-head">
-      <h2>籌備檢核表</h2>
-      <p>兩場婚宴共用一份清單，依月份排好。完成就打勾，也可以自己新增項目，新人和顧問看到的都是同一份最新進度。</p>
+      <h2 id="checklistTitle">籌備檢核表</h2>
+      <p>只列出這一場要做的事，加上兩場共用的準備（標「兩場共用」）。完成就打勾，也可以自己新增項目，新增的項目會歸在目前這一場。</p>
     </div>
     <div class="checklist-legend">
       <span><span class="legend-dot" style="background:var(--overdue);"></span>已逾期</span>
-      <span><span class="legend-dot" style="background:var(--soon);"></span>14 天內到期</span>
+      <span><span class="legend-dot" style="background:var(--lemon-soft);"></span>14 天內到期</span>
       <span><span class="legend-dot" style="background:var(--donebg);"></span>已完成</span>
     </div>
     <div id="checklistContainer"></div>
     <div class="tool-row" style="margin-top:6px;">
-      <button class="btn-line" id="replaceChecklistBtn">↺ 改用這對新人的預設時程</button>
-      <span class="tool-note">會清除試算表中目前的檢核項目，換成依兩場婚期與 2/6 春節排好的時程</span>
+      <button class="btn-line" id="replaceChecklistBtn">↺ 兩場檢核表都重設成預設時程</button>
+      <span class="tool-note">會清除試算表中目前所有檢核項目</span>
     </div>
     <p class="save-note">＊勾選與編輯會即時同步到 Google 試算表（約每 20 秒自動更新，也可以點「重新整理」）。</p>
   </section>
@@ -316,7 +363,7 @@
   <section class="panel" id="panel-itinerary">
     <div class="section-head">
       <h2 id="itinTitle">當天流程</h2>
-      <p>上方票根可以切換 3/6 家宴與 3/27 朋友宴。表格直接點就能改時間、內容、音樂、投影、道具與備註，實際時間婚禮前再和總召定案。</p>
+      <p>表格直接點就能改時間、內容、音樂、投影、道具與備註，實際時間婚禮前再和總召定案。</p>
     </div>
     <div class="ev-card" id="evCardItin"></div>
     <div class="print-only">
@@ -345,13 +392,36 @@
     <div class="tool-row">
       <button class="btn-line" id="exportExcelBtn">⬇ 下載 Excel</button>
       <button class="btn-line" id="exportPdfBtn">⬇ 下載 PDF</button>
-      <button class="btn-line" id="replaceItinBtn">↺ 改用這場的預設流程</button>
+      <button class="btn-line" id="replaceItinBtn">↺ 這場流程重設成草案</button>
       <span class="tool-note" id="itinUpdatedLabel"></span>
     </div>
     <div class="props-checklist" id="propsChecklist">
       <div class="props-checklist-head">道具核對清單</div>
       <p class="props-checklist-sub">自動整理這一場流程表「道具」欄出現的物品，準備好就打勾。</p>
       <div id="propsList"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-gallery">
+    <div class="section-head">
+      <h2 id="galTitle">造型照片</h2>
+      <p>禮服、妝髮、花藝、佈置的參考照片都放這裡，點照片可以放大，左右切換。</p>
+    </div>
+    <div class="gal-filters" id="galFilters"></div>
+    <div id="galGrid" class="gal-grid"></div>
+    <div class="gal-add">
+      <h3>新增照片</h3>
+      <form id="galForm" class="gal-add-row">
+        <select name="category" aria-label="分類"></select>
+        <input name="title" type="text" placeholder="說明，例如：一進 Classic Jo 白紗">
+        <input name="url" type="text" placeholder="貼上圖片連結" required>
+        <select name="scope" aria-label="套用場次">
+          <option value="this">只放這一場</option>
+          <option value="both">兩場共用</option>
+        </select>
+        <button class="btn-ink" type="submit">新增照片</button>
+      </form>
+      <p class="gal-help">可以貼：Google 雲端硬碟的圖片分享連結（分享設定要改成「知道連結的任何人」）、任何圖片網址，或放在 GitHub 網站資料夾裡的檔名，例如 <code>images/dress-1.jpg</code>。</p>
     </div>
   </section>
 
@@ -414,6 +484,17 @@
 <div class="pearls" aria-hidden="true"></div>
 <footer><span class="disp">See you at the party!</span>Just.in Wedding 佳時婚禮顧問工作室</footer>
 
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="照片放大檢視">
+  <button class="lb-close" id="lbClose">關閉 ✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="上一張">‹</button>
+  <div class="lb-inner">
+    <img id="lbImg" alt="">
+    <div class="lb-cap" id="lbCap"></div>
+    <div class="lb-tools"><a id="lbOpen" target="_blank" rel="noopener">開啟原圖</a><button id="lbDelete">刪除這張</button></div>
+  </div>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="下一張">›</button>
+</div>
+
 <script>
 /* =========================================================
    ★ 新人資料設定區：換一組新人時，主要改這裡 ★
@@ -426,15 +507,14 @@ var CONFIG = {
   milestones: [
     {date:'2026-09-16', label:'登記・醉月樓午餐'},
     {date:'2026-11-13', label:'拍婚紗'},
-    {date:'2027-03-06', label:'家宴'},
-    {date:'2027-03-27', label:'朋友宴'}
+    {date:'2027-03-06', label:'家宴', event:'0306'},
+    {date:'2027-03-27', label:'朋友宴', event:'0327'}
   ],
-  appsScriptUrl: 'https://script.google.com/macros/s/AKfycbyEAC-QMywfOMmxXxedAlmAChzggnHa6qA0Cw3yqQhWYEA1UKeIbkV1a2hvzXzZXCm8qg/exec',   // Apps Script 部署網址（/exec 結尾）
+  appsScriptUrl: 'https://script.google.com/macros/s/AKfycbyEAC-QMywfOMmxXxedAlmAChzggnHa6qA0Cw3yqQhWYEA1UKeIbkV1a2hvzXzZXCm8qg/exec',
   photoUrl: '',                 // 婚紗照網址，留空就不顯示
   paymentsPasscode: 'party'     // 尾款頁通關密碼，不分大小寫（僅為輕量保護）
 };
 
-/* 兩場婚宴。流程、廠商、尾款、道具都依 event 欄位分場 */
 var EVENTS = {
   '0306': {key:'0306', label:'家宴', date:'2027-03-06', venue:'台中市役所', venueUrl:'https://gowedding.tw/Store/%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%BD%B9%E6%89%80/',
            meal:'午宴', tables:'9 桌（女方 6・男方 4，含主桌）', style:'復古、古典／蕾絲、珍珠', dress:'拍照 vissi → 一進 Classic Jo → 二進 類旗袍 → 送客 vissi'},
@@ -442,8 +522,8 @@ var EVENTS = {
            meal:'午宴', tables:'8 桌（國小・國中・高中・大學・學生桌）', style:'復古／蕾絲、珍珠', dress:'一進 vissi → 二進＋送客 vissi'}
 };
 var EVENT_KEYS = ['0306','0327'];
+var GALLERY_CATS = ['婚紗','妝髮','花藝','佈置','喜帖小物','其他'];
 
-/* 各場預設流程草案（時間為草案，依市役所供餐時段調整） */
 var DEFAULT_ITINERARY = {
   '0306': [
     {time:'09:30', end_time:'11:00', outline:'新人戶外拍攝', summary:'新娘換上 vissi，在市役所內外拍照', music:'', screen:'', props:'捧花', note:'攝影瓦農，前一晚需訂住宿'},
@@ -466,7 +546,6 @@ var DEFAULT_ITINERARY = {
   ]
 };
 
-/* 各場預設廠商（整理自規劃簡報） */
 var DEFAULT_VENDORS = {
   '0306': [
     {category:'場地', name:'台中市役所', note:'午宴 9 桌，總額預估 197,901，訂金 30,000'},
@@ -488,7 +567,6 @@ var DEFAULT_VENDORS = {
   ]
 };
 
-/* 各場預設尾款（amount＝當天要付的尾款；flag＝金額還沒確定） */
 var DEFAULT_PAYMENTS = {
   '0306': [
     {name:'台中市役所', role:'場地・午宴 9 桌', amount:'167901', note:'依最終桌數結算，此為預估', flag:true},
@@ -508,43 +586,49 @@ var DEFAULT_PAYMENTS = {
   ]
 };
 
-/* 預設檢核表（依規劃簡報的月份排程，並避開 2027/2/6 春節連假） */
+/* 檢核表：[場次, 階段, 分類, 項目, 說明]；場次空白＝兩場共用 */
 var CHECKLIST_TEMPLATE = [
-  ['2026/11/10 前（拍婚紗前）','出席名單','統計兩場宴客人數','家宴與朋友宴分開統計，才能確認兩場桌數。'],
-  ['2026/11/10 前（拍婚紗前）','婚紗照','確認 11/13 拍婚紗流程與三個地點','咖啡廳 → 紅帽象／廟東 → 環保公園，攝影 Zoe、新秘 Evonne。'],
-  ['2026/11/10 前（拍婚紗前）','婚紗照','確認三套造型與新郎三套','vissi 魚尾、後生短洋裝、wade 復古。'],
-  ['2026/11/10 前（拍婚紗前）','新秘','和 Evonne 溝通髮型','避開不喜歡的髮型：超級高馬尾、大側分太厚重又梳太高。'],
-  ['2026/11/20 前','喜帖','和芊澐見面討論喜帖設計（11/20）','建築水彩畫風格，選項：水彩市役所／紙本蕾絲。'],
-  ['2026/11/20 前','攝影','預訂 3/6 攝影師瓦農的住宿','瓦農需要住宿，市役所附近先訂好。'],
-  ['2026/12/31 前','喜餅','試吃並選定喜餅','候選：高雄中村文御手作、日出。網友說不用另外印謝卡，用喜餅送就好。'],
-  ['2026/12/31 前','服裝','挑選主婚人服裝','媽媽裝、爸爸西裝。'],
-  ['2026/12/31 前','保養','安排婚前保養','作臉、身體保養排程。'],
-  ['2026/12/31 前','出席名單','發放婚禮表單給賓客','蒐集出席、素食、兒童座椅需求。'],
-  ['2026/12/31 前','喜帖','選定喜帖樣式',''],
-  ['2026/12/31 前','新秘','Evonne 試妝','試妝 5,000，只試妝不試髮：妝髮溝通、妝感嘗試、風格定位。'],
-  ['2027/01/31 前','流程','和兩位主持人討論流程細節','3/6 瀚昱、3/27 翔翔；朋友宴的遊戲要一起規劃。'],
-  ['2027/01/31 前','喜帖','印製喜帖',''],
-  ['2027/01/31 前','小物','採購小禮物與遊戲道具','候選：可愛香皂、漂亮蜂蜜、糖果罐、咖啡。'],
-  ['2027/01/31 前','新秘','確認幾位媽媽要妝髮','目前報價還沒含媽媽妝髮。'],
-  ['2027/01/31 前','朋友宴','預訂拍貼機',''],
-  ['2027/01/31 前','素材','準備兩場的音樂與影片','開場影片、成長照片、婚紗照輪播、各橋段音樂。'],
-  ['2027/02/04 前（春節前）','場地','確認兩場最終菜單','2/6 春節，連假前先和市役所定案。'],
-  ['2027/02/04 前（春節前）','喜帖','寄出喜帖','連假前寄出，賓客才有時間安排 3 月行程。'],
-  ['2027/02/04 前（春節前）','工作人員','安排兩場當日工作人員名單',''],
-  ['2027/02/04 前（春節前）','交通','預訂禮車',''],
-  ['2027/02/04 前（春節前）','出席名單','再次確認兩場桌數',''],
-  ['2027/02/04 前（春節前）','出席名單','排兩場座位表',''],
-  ['2027/03/03 前（家宴前）','場地','和主持人、市役所測試影音','3/6 家宴用的影片、音樂、投影都要實測。'],
-  ['2027/03/03 前（家宴前）','廠商','確認家宴所有廠商細節與流程',''],
-  ['2027/03/03 前（家宴前）','出席名單','敲定家宴最終人數','含素食、兒童座椅。'],
-  ['2027/03/03 前（家宴前）','出席名單','確認家宴桌次與桌卡內容',''],
-  ['2027/03/03 前（家宴前）','廠商尾款','準備家宴尾款現金並分裝','參考「廠商尾款」頁的 3/6 金額。'],
-  ['2027/03/03 前（家宴前）','保養','作臉、身體保養、飲食控管',''],
-  ['2027/03/24 前（朋友宴前）','場地','和主持人測試朋友宴影音與遊戲畫面',''],
-  ['2027/03/24 前（朋友宴前）','出席名單','敲定朋友宴最終人數與桌卡',''],
-  ['2027/03/24 前（朋友宴前）','道具','準備遊戲道具、抽獎獎品',''],
-  ['2027/03/24 前（朋友宴前）','廠商尾款','準備朋友宴尾款現金並分裝','參考「廠商尾款」頁的 3/27 金額。'],
-  ['2027/03/27 朋友宴當天','派對','好好玩一場','剩下的交給總召與團隊。']
+  ['0306','2026/11/10 前（拍婚紗前）','出席名單','統計家宴人數','親友名單抓好，才能確認桌數。'],
+  ['0327','2026/11/10 前（拍婚紗前）','出席名單','統計朋友宴人數','依國小、國中、高中、大學分桌抓人數。'],
+  ['','2026/11/10 前（拍婚紗前）','婚紗照','確認 11/13 拍婚紗流程與三個地點','咖啡廳 → 紅帽象／廟東 → 環保公園，攝影 Zoe、新秘 Evonne。'],
+  ['','2026/11/10 前（拍婚紗前）','婚紗照','確認三套造型與新郎三套','vissi 魚尾、後生短洋裝、wade 復古。'],
+  ['','2026/11/10 前（拍婚紗前）','新秘','和 Evonne 溝通髮型','避開不喜歡的髮型：超級高馬尾、大側分太厚重又梳太高。'],
+  ['','2026/11/20 前','喜帖','和芊澐見面討論喜帖設計（11/20）','建築水彩畫風格，選項：水彩市役所／紙本蕾絲。'],
+  ['0306','2026/11/20 前','攝影','預訂攝影師瓦農的住宿','瓦農需要住宿，市役所附近先訂好。'],
+  ['','2026/12/31 前','喜餅','試吃並選定喜餅','候選：高雄中村文御手作、日出。網友說不用另外印謝卡，用喜餅送就好。'],
+  ['0306','2026/12/31 前','服裝','挑選主婚人服裝','媽媽裝、爸爸西裝。'],
+  ['','2026/12/31 前','保養','安排婚前保養','作臉、身體保養排程。'],
+  ['','2026/12/31 前','出席名單','發放婚禮表單給賓客','蒐集出席、素食、兒童座椅需求。'],
+  ['','2026/12/31 前','喜帖','選定喜帖樣式',''],
+  ['','2026/12/31 前','新秘','Evonne 試妝','試妝 5,000，只試妝不試髮：妝髮溝通、妝感嘗試、風格定位。'],
+  ['0306','2027/01/31 前','流程','和主持人瀚昱討論家宴流程',''],
+  ['0327','2027/01/31 前','流程','和主持人翔翔討論朋友宴流程與遊戲','國小／國中／高中／大學同學分組對抗、抽獎。'],
+  ['','2027/01/31 前','喜帖','印製喜帖',''],
+  ['','2027/01/31 前','小物','採購送客小禮物','候選：可愛香皂、漂亮蜂蜜、糖果罐、咖啡。'],
+  ['0327','2027/01/31 前','道具','採購遊戲道具與抽獎獎品',''],
+  ['0306','2027/01/31 前','新秘','確認幾位媽媽要妝髮','目前報價還沒含媽媽妝髮。'],
+  ['0327','2027/01/31 前','派對','預訂拍貼機',''],
+  ['0306','2027/01/31 前','素材','準備家宴影片與音樂','開場影片、成長照片、婚紗照輪播、各橋段音樂。'],
+  ['0327','2027/01/31 前','素材','準備朋友宴影片、音樂與遊戲畫面',''],
+  ['','2027/02/04 前（春節前）','喜帖','寄出喜帖','2/6 春節，連假前寄出，賓客才有時間安排 3 月行程。'],
+  ['0306','2027/02/04 前（春節前）','場地','確認家宴最終菜單','連假前先和市役所定案。'],
+  ['0306','2027/02/04 前（春節前）','工作人員','安排家宴當日工作人員名單',''],
+  ['0306','2027/02/04 前（春節前）','交通','預訂禮車',''],
+  ['0306','2027/02/04 前（春節前）','出席名單','確認家宴桌數並排座位表','女方 6 桌、男方 4 桌（含主桌）。'],
+  ['0327','2027/02/04 前（春節前）','場地','確認朋友宴最終菜單',''],
+  ['0327','2027/02/04 前（春節前）','工作人員','安排朋友宴當日工作人員名單',''],
+  ['0327','2027/02/04 前（春節前）','出席名單','確認朋友宴桌數並排座位表','國小、國中、高中、大學、學生桌。'],
+  ['0306','2027/03/03 前（家宴前）','場地','和主持人、市役所測試家宴影音',''],
+  ['0306','2027/03/03 前（家宴前）','廠商','確認家宴所有廠商細節與流程',''],
+  ['0306','2027/03/03 前（家宴前）','出席名單','敲定家宴最終人數與桌卡','含素食、兒童座椅。'],
+  ['0306','2027/03/03 前（家宴前）','廠商尾款','準備家宴尾款現金並分裝','參考「廠商尾款」頁。'],
+  ['','2027/03/03 前（家宴前）','保養','作臉、身體保養、飲食控管',''],
+  ['0306','2027/03/06 家宴當天','派對','和家人好好吃一頓','剩下的交給總召與團隊。'],
+  ['0327','2027/03/24 前（朋友宴前）','場地','和主持人測試朋友宴影音與遊戲畫面',''],
+  ['0327','2027/03/24 前（朋友宴前）','出席名單','敲定朋友宴最終人數與桌卡',''],
+  ['0327','2027/03/24 前（朋友宴前）','道具','遊戲道具、獎品、拍貼機到位',''],
+  ['0327','2027/03/24 前（朋友宴前）','廠商尾款','準備朋友宴尾款現金並分裝','參考「廠商尾款」頁。'],
+  ['0327','2027/03/27 朋友宴當天','派對','好好玩一場','剩下的交給總召與團隊。']
 ];
 
 (function(){
@@ -553,12 +637,10 @@ var CHECKLIST_TEMPLATE = [
   function slashDate(s){ return s.replace(/-/g,'/'); }
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function addDays(d, n){ return new Date(d.getTime() + n*864e5); }
-  function daysUntil(dateStr){
-    var t = new Date(); t.setHours(0,0,0,0);
-    return Math.round((new Date(dateStr + 'T00:00:00') - t) / 864e5);
-  }
+  function daysUntil(dateStr){ var t = new Date(); t.setHours(0,0,0,0); return Math.round((new Date(dateStr + 'T00:00:00') - t) / 864e5); }
   var WEEK = ['日','一','二','三','四','五','六'];
   var namesLine = CONFIG.groom + ' & ' + CONFIG.bride;
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- 目前場次 ----------
   var currentEvent = (function(){
@@ -569,7 +651,7 @@ var CHECKLIST_TEMPLATE = [
   function ev(){ return EVENTS[currentEvent]; }
   function evName(k){ var e = EVENTS[k || currentEvent]; return slashDate(e.date).slice(5) + ' ' + e.label; }
 
-  // ---------- 套用新人資料 ----------
+  // ---------- 基本資料 ----------
   document.title = namesLine + '・婚禮派對手帖';
   document.getElementById('hGroom').textContent = CONFIG.groom;
   document.getElementById('hBride').textContent = CONFIG.bride;
@@ -579,19 +661,72 @@ var CHECKLIST_TEMPLATE = [
     var el = document.getElementById(p[0]);
     p[1].forEach(function(t){ var c = document.createElement('span'); c.className = 'chip'; c.textContent = '#' + t; el.appendChild(c); });
   });
-  (function(){
+  function renderMilestones(){
     var el = document.getElementById('milestones');
+    el.innerHTML = '';
     CONFIG.milestones.forEach(function(m){
       var d = document.createElement('div');
-      d.className = 'ms' + (daysUntil(m.date) < 0 ? ' done' : '');
+      d.className = 'ms' + (daysUntil(m.date) < 0 ? ' done' : '') + (m.event === currentEvent ? ' now' : '');
       d.innerHTML = '<b>' + esc(m.label) + '</b>' + esc(slashDate(m.date));
       el.appendChild(d);
     });
-  })();
+  }
   if(CONFIG.photoUrl){
     var img = document.createElement('img');
     img.src = CONFIG.photoUrl; img.alt = CONFIG.groomFull + '與' + CONFIG.brideFull + '的婚紗照';
     document.getElementById('photoSlot').appendChild(img);
+  }
+
+  // ---------- 飄浮元素：家宴＝珍珠、愛心、星星；朋友宴＝彩紙、氣球、彩帶 ----------
+  (function(){
+    var box = document.getElementById('floaters');
+    var heart = '<svg viewBox="0 0 24 22"><path d="M12 21s-9-5.6-9-12A5 5 0 0 1 12 6a5 5 0 0 1 9 3c0 6.4-9 12-9 12z" fill="none" stroke="#fff" stroke-width="2.2"/></svg>';
+    var star = '<svg viewBox="0 0 24 24"><path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z" fill="#FFD23F" stroke="#2D1B4E" stroke-width="1.4"/></svg>';
+    function balloon(c){ return '<svg viewBox="0 0 30 56"><ellipse cx="15" cy="14" rx="12" ry="14" fill="'+c+'" stroke="#2D1B4E" stroke-width="1.6"/><path d="M13 28h4l-2 3z" fill="#2D1B4E"/><path d="M15 31c-4 6 4 10 0 16s3 7 0 9" fill="none" stroke="#2D1B4E" stroke-width="1.2"/></svg>'; }
+    var squig = '<svg viewBox="0 0 60 16"><path d="M2 8c6-8 10 8 16 0s10 8 16 0 10 8 16 0 6 4 8 2" fill="none" stroke="#FFD23F" stroke-width="3" stroke-linecap="round"/></svg>';
+    var seed = 7;
+    function rnd(){ seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    function add(set, cls, html, sz, styleExtra){
+      var s = document.createElement('span');
+      s.className = 'fl ' + set + ' ' + cls;
+      s.style.left = (rnd()*96) + '%';
+      s.style.top = (rnd()*88) + '%';
+      s.style.setProperty('--sz', sz + 'px');
+      s.style.setProperty('--dur', (7 + rnd()*7).toFixed(1) + 's');
+      s.style.setProperty('--delay', (-rnd()*10).toFixed(1) + 's');
+      s.style.setProperty('--dx', ((rnd()-.5)*40).toFixed(0) + 'px');
+      s.style.setProperty('--dy', (-10 - rnd()*26).toFixed(0) + 'px');
+      s.style.setProperty('--rot', ((rnd()-.5)*60).toFixed(0) + 'deg');
+      if(styleExtra) for(var k in styleExtra) s.style[k] = styleExtra[k];
+      if(html) s.innerHTML = html;
+      box.appendChild(s);
+    }
+    for(var i=0;i<10;i++) add('s0306','pearl','',8 + rnd()*14);
+    for(var j=0;j<5;j++) add('s0306','','' + heart, 16 + rnd()*14);
+    for(var k=0;k<3;k++) add('s0306','', star, 14 + rnd()*8);
+    var cols = ['#FFD23F','#FFFFFF','#2D1B4E','#FF4F8B'];
+    for(var a=0;a<14;a++) add('s0327','confetti','',10 + rnd()*10,{background:cols[a%cols.length]});
+    add('s0327','', balloon('#FF4F8B'), 30); add('s0327','', balloon('#FFD23F'), 26); add('s0327','', balloon('#FFFFFF'), 24);
+    for(var b=0;b<3;b++) add('s0327','', squig, 46 + rnd()*20);
+  })();
+
+  function confettiBurst(fromEl){
+    if(reduceMotion) return;
+    var r = fromEl.getBoundingClientRect();
+    var cx = r.left + r.width/2, cy = r.top + r.height/2;
+    var cols = currentEvent === '0306' ? ['#FF4F8B','#FFFFFF','#FFD23F','#FFC2D7'] : ['#22B8A7','#FFD23F','#FFFFFF','#2D1B4E'];
+    for(var i=0;i<34;i++){
+      var p = document.createElement('span');
+      p.className = 'burst';
+      p.style.left = cx + 'px'; p.style.top = cy + 'px';
+      p.style.background = cols[i % cols.length];
+      var ang = Math.random()*Math.PI*2, dist = 80 + Math.random()*160;
+      p.style.setProperty('--tx', (Math.cos(ang)*dist).toFixed(0) + 'px');
+      p.style.setProperty('--ty', (Math.sin(ang)*dist + 60).toFixed(0) + 'px');
+      p.style.setProperty('--r', ((Math.random()-.5)*720).toFixed(0) + 'deg');
+      document.body.appendChild(p);
+      setTimeout(function(el){ el.remove(); }.bind(null, p), 1300);
+    }
   }
 
   // ---------- 票根 ----------
@@ -606,11 +741,15 @@ var CHECKLIST_TEMPLATE = [
       var daysHtml = d > 0 ? '<span class="days">' + d + '</span><span class="days-l">天後開趴</span>'
                    : d === 0 ? '<span class="days">今天</span><span class="days-l">就是今天</span>'
                    : '<span class="days">♥</span><span class="days-l">圓滿完成</span>';
-      b.innerHTML = '<div class="main"><span class="date">' + slashDate(e.date).slice(5) + '</span><span class="label">' + esc(e.label) + '</span>' +
+      b.innerHTML = '<div class="main"><span class="date">' + slashDate(e.date).slice(5) + '</span><span class="label">' + esc(e.label) + '</span><span class="swatch"></span>' +
         '<div class="meta">' + e.date.slice(0,4) + '（' + WEEK[dt.getDay()] + '）' + esc(e.venue) + '・' + esc(e.meal) + '</div>' +
         '<div class="meta">' + esc(e.tables) + '</div></div>' +
         '<div class="stub">' + daysHtml + '<span class="pick"></span></div>';
-      b.addEventListener('click', function(){ setEvent(k); });
+      b.addEventListener('click', function(){
+        if(k === currentEvent) return;
+        setEvent(k);
+        confettiBurst(document.querySelector('.ticket.t' + k));
+      });
       box.appendChild(b);
     });
   }
@@ -619,16 +758,20 @@ var CHECKLIST_TEMPLATE = [
     currentEvent = k;
     try{ localStorage.setItem('weddingEvent', k); }catch(e){}
     document.body.className = 'ev-' + k;
-    renderTickets(); applyEventLabels();
-    renderItin(); renderPropsChecklist(); renderVendors();
+    renderTickets(); renderMilestones(); applyEventLabels();
+    renderChecklist(); updateProgress();
+    renderItin(); renderPropsChecklist(); renderVendors(); renderGallery();
     if(paymentsUnlocked) renderPayments();
   }
 
   function applyEventLabels(){
     var e = ev(), n = evName();
+    document.getElementById('checklistTitle').textContent = n + '・籌備檢核表';
     document.getElementById('itinTitle').textContent = n + '・當天流程';
+    document.getElementById('galTitle').textContent = n + '・造型照片';
     document.getElementById('vendorTitle').textContent = n + '・廠商聯繫清單';
     document.getElementById('payTitle').textContent = n + '・廠商尾款確認';
+    document.getElementById('progressLabel').textContent = n + '・籌備進度';
     document.getElementById('printTitle').textContent = slashDate(e.date) + ' ' + namesLine + ' ' + e.label + '・當天流程';
     document.getElementById('printVenue').textContent = e.venue + ' ' + e.meal;
     document.getElementById('evCardItin').innerHTML =
@@ -636,9 +779,7 @@ var CHECKLIST_TEMPLATE = [
       '<div><span class="k">桌數</span>' + esc(e.tables) + '</div>' +
       '<div><span class="k">風格元素</span>' + esc(e.style) + '</div>' +
       '<div><span class="k">新娘換裝</span>' + esc(e.dress) + '</div>';
-    var flag = document.getElementById('evFlag');
-    flag.textContent = '正在看：' + n;
-    flag.classList.toggle('hide', document.querySelector('.tab-btn.active').dataset.tab === 'checklist');
+    document.getElementById('evFlag').textContent = '正在看：' + n;
   }
 
   // ---------- tabs ----------
@@ -647,7 +788,6 @@ var CHECKLIST_TEMPLATE = [
     btn.addEventListener('click', function(){
       tabs.forEach(function(t){ t.classList.toggle('active', t === btn); });
       document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + btn.dataset.tab); });
-      document.getElementById('evFlag').classList.toggle('hide', btn.dataset.tab === 'checklist');
     });
   });
 
@@ -656,29 +796,35 @@ var CHECKLIST_TEMPLATE = [
   var isConfigured = !!APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_YOUR') !== 0;
   var syncStatusEl = document.getElementById('syncStatus');
   var syncBarEl = document.querySelector('.sync-bar');
-  var state = { Checklist: [], Itinerary: [], Vendors: [], Payments: [], Props: [] };
-  var loadedOnce = false;
+  var state = { Checklist: [], Itinerary: [], Vendors: [], Payments: [], Props: [], Gallery: [] };
+  var loadedOnce = false, seedingNow = false;
 
   function setSyncStatus(text, isError){ syncStatusEl.textContent = text; syncBarEl.classList.toggle('error', !!isError); }
   function toBool(v){ return v === true || v === 'TRUE' || v === 'true' || v === 1 || v === '1'; }
   function toNum(v){ var n = parseFloat(v); return isNaN(n) ? 0 : n; }
   function toStr(v){ return (v === undefined || v === null) ? '' : String(v); }
   function newId(prefix){ return prefix + '-' + Date.now() + '-' + Math.random().toString(36).slice(2,6); }
-  // 舊資料沒有 event 欄位時，兩場都顯示
-  function forEvent(rows){ return rows.filter(function(r){ return !r.event || r.event === currentEvent; }); }
-  // 試算表可能把 0306 存成 306，這裡補回 4 碼
   function eventCode(v){ v = toStr(v).replace(/\D/g,''); if(!v) return ''; return v.length >= 4 ? v.slice(-4) : v.padStart(4,'0'); }
+  function forEvent(rows){ return rows.filter(function(r){ return !r.event || r.event === currentEvent; }); }
+  function maxOrder(rows){ return rows.reduce(function(m,i){ return Math.max(m,i.order); }, 0); }
 
   var lastSyncTime = null;
   function updateExportLabels(){
     document.getElementById('itinUpdatedLabel').textContent = lastSyncTime ? ('資料更新時間：' + lastSyncTime) : '';
     document.getElementById('printUpdatedTime').textContent = lastSyncTime || '';
   }
+  function renderAll(){
+    renderChecklist(); updateProgress();
+    renderItin(); renderPropsChecklist(); renderVendors(); renderGallery();
+    if(paymentsUnlocked) renderPayments();
+  }
 
   async function loadAll(silent){
     if(!isConfigured){
-      setSyncStatus('⚠️ 還沒連上 Google 試算表：請在程式碼上方設定區貼上新的 appsScriptUrl。', true);
-      renderChecklist(); updateProgress(); renderItin(); renderPropsChecklist(); renderVendors();
+      setSyncStatus('⚠️ 還沒連上 Google 試算表：請在程式碼上方設定區貼上 appsScriptUrl。下方是預設資料的預覽，不會存檔。', true);
+      if(!loadedOnce){ loadedOnce = true; await autoSeed(); }
+      setSyncStatus('⚠️ 還沒連上 Google 試算表：請在程式碼上方設定區貼上 appsScriptUrl。下方是預設資料的預覽，不會存檔。', true);
+      renderAll();
       return;
     }
     if(!silent) setSyncStatus('正在讀取最新資料…');
@@ -691,72 +837,145 @@ var CHECKLIST_TEMPLATE = [
       state.Vendors = (data.Vendors || []).map(normalizeVendorRow);
       state.Payments = (data.Payments || []).map(normalizePaymentRow);
       state.Props = (data.Props || []).map(normalizePropRow);
+      state.Gallery = (data.Gallery || []).map(normalizeGalleryRow);
       loadedOnce = true;
-      renderChecklist(); updateProgress();
-      renderItin(); renderPropsChecklist();
-      renderVendors();
-      if(paymentsUnlocked) renderPayments();
+      renderAll();
       lastSyncTime = new Date().toLocaleString('zh-TW');
       updateExportLabels();
-      setSyncStatus('已同步（' + new Date().toLocaleTimeString('zh-TW') + '）');
+      if(!seedingNow) setSyncStatus('已同步（' + new Date().toLocaleTimeString('zh-TW') + '）');
+      autoSeed();
     }catch(e){
       console.error('Sync load error', e);
       setSyncStatus('⚠️ 讀取失敗：請確認 Apps Script 已部署成「任何人皆可存取」，再點「重新整理」。', true);
     }
   }
 
-  async function postAction(payload){
-    if(!isConfigured) return null;
+  async function postRaw(payload){
     try{
       var res = await fetch(APPS_SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload)});
-      var data = await res.json();
-      if(!data.ok) throw new Error(data.error || 'unknown error');
-      return data;
-    }catch(e){
-      console.error('Sync write error', e);
-      setSyncStatus('⚠️ 這筆變更沒有同步成功：檢查網路後點「重新整理」確認狀態。', true);
+      return await res.json();
+    }catch(e){ return {ok:false, error:String(e)}; }
+  }
+  async function postAction(payload){
+    if(!isConfigured) return {ok:true};
+    var data = await postRaw(payload);
+    if(!data.ok){
+      console.error('Sync write error', data.error);
+      setSyncStatus('⚠️ 這筆變更沒有同步成功（' + (data.error || '網路錯誤') + '），請點「重新整理」確認。', true);
       return null;
     }
+    return data;
+  }
+
+  // ---------- 自動帶入預設資料（試算表沒有該場資料時） ----------
+  function checklistSeedRows(){
+    return CHECKLIST_TEMPLATE.map(function(t, idx){
+      return {id:newId('c'), event:t[0], phase:t[1], category:t[2], text:t[3], done:'FALSE', desc:t[4], ref_link:'', file_link:'', order:idx+1};
+    });
+  }
+  function itinSeedRows(k, base){
+    return DEFAULT_ITINERARY[k].map(function(d, idx){
+      return itinFields({id:newId('i'), event:k, time:d.time, end_time:d.end_time, outline:d.outline, summary:d.summary, music:d.music, screen:d.screen, props:d.props, note:d.note, order:base+idx+1});
+    });
+  }
+  function vendorSeedRows(k, base){
+    return DEFAULT_VENDORS[k].map(function(d, idx){
+      return vendorFields({id:newId('v'), event:k, category:d.category, name:d.name, contact:'', phone:'', line:'', arrival:'', note:d.note, staff_count:'', meat_count:'', veg_count:'', dietary_restriction:'', order:base+idx+1});
+    });
+  }
+  function paymentSeedRows(k, base){
+    return DEFAULT_PAYMENTS[k].map(function(d, idx){
+      return {id:newId('p'), event:k, name:d.name, role:d.role, amount:d.amount, pay_method:'cash', pay_label:'現金',
+        when: d.flag ? 'pending' : 'day', when_label: d.flag ? '金額待確認' : '當天付清', contact:'', note:d.note,
+        flag: d.flag ? 'TRUE' : 'FALSE', confirmed:'FALSE', order:base+idx+1};
+    });
+  }
+  var NORMALIZE = {};
+  var seedAttempted = {};
+
+  async function seedSheet(sheet, eventKey, rows){
+    if(!isConfigured){
+      rows.forEach(function(r){ state[sheet].push(NORMALIZE[sheet](r)); });
+      return true;
+    }
+    var res = await postRaw({action:'seed', sheet:sheet, event:eventKey, rows:rows});
+    if(res.ok) return true;
+    if(String(res.error || '').indexOf('未知的動作') !== -1){
+      // 舊版 Apps Script 沒有 seed：改成一筆一筆寫
+      for(var i=0;i<rows.length;i++){
+        setSyncStatus('正在寫入預設資料… ' + sheet + ' ' + (i+1) + ' / ' + rows.length + '（請勿關閉頁面）');
+        var r = await postRaw({action:'add', sheet:sheet, fields:rows[i]});
+        if(!r.ok) return false;
+      }
+      return true;
+    }
+    console.error('seed error', res.error);
+    return false;
+  }
+
+  async function autoSeed(){
+    if(seedingNow) return;
+    var jobs = [];
+    if(state.Checklist.length === 0 && !seedAttempted.Checklist) jobs.push(['Checklist','ALL', checklistSeedRows]);
+    EVENT_KEYS.forEach(function(k){
+      [['Itinerary',itinSeedRows],['Vendors',vendorSeedRows],['Payments',paymentSeedRows]].forEach(function(p){
+        var key = p[0] + k;
+        if(!seedAttempted[key] && !state[p[0]].some(function(r){ return r.event === k; })) jobs.push([p[0], k, p[1]]);
+      });
+    });
+    if(!jobs.length) return;
+    seedingNow = true;
+    var failed = 0;
+    for(var i=0;i<jobs.length;i++){
+      var j = jobs[i];
+      seedAttempted[j[0] + (j[1] === 'ALL' ? '' : j[1])] = true;
+      setSyncStatus('第一次使用：正在把預設資料寫進試算表（' + (i+1) + ' / ' + jobs.length + '）…');
+      var rows = j[1] === 'ALL' ? j[2]() : j[2](j[1], maxOrder(state[j[0]]));
+      if(!(await seedSheet(j[0], j[1], rows))) failed++;
+    }
+    seedingNow = false;
+    if(!isConfigured) return;
+    if(failed) setSyncStatus('⚠️ 有 ' + failed + ' 組預設資料沒寫進試算表，請點「重新整理」再試一次。', true);
+    await loadAll(true);
   }
 
   document.getElementById('refreshBtn').addEventListener('click', function(){ loadAll(false); });
-  var bulkBusy = false;
   setInterval(function(){
-    if(bulkBusy) return;
+    if(seedingNow || bulkBusy) return;
     var a = document.activeElement;
-    var typing = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable);
-    if(!typing) loadAll(true);
+    var typing = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || a.isContentEditable);
+    if(!typing && !lightboxOpen) loadAll(true);
   }, 20000);
 
   function pick(r, keys){ for(var i=0;i<keys.length;i++){ if(r[keys[i]] !== undefined) return r[keys[i]]; } return ''; }
   function normalizeChecklistRow(r){
-    return {id:toStr(r.id), phase:toStr(r.phase), category:toStr(r.category), text:toStr(r.text), done:toBool(r.done), desc:toStr(r.desc), ref_link:toStr(r.ref_link), file_link:toStr(r.file_link), order:toNum(r.order)};
+    return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), phase:toStr(r.phase), category:toStr(r.category), text:toStr(r.text), done:toBool(r.done), desc:toStr(r.desc), ref_link:toStr(r.ref_link), file_link:toStr(r.file_link), order:toNum(r.order)};
   }
   function normalizeItinRow(r){
     return {
       id:toStr(r.id), event:eventCode(pick(r,['event','場次'])),
-      time:toStr(pick(r,['開始時間','時間','time'])),
-      end_time:toStr(pick(r,['結束時間','end_time'])),
-      outline:toStr(pick(r,['大綱','outline'])),
-      summary:toStr(pick(r,['概要內容','概要說明','summary'])),
-      music:toStr(pick(r,['音樂','music'])),
-      screen:toStr(pick(r,['投影幕','screen'])),
-      props:toStr(pick(r,['道具','props'])),
-      note:toStr(pick(r,['備註','note'])),
-      order:toNum(r.order)
+      time:toStr(pick(r,['開始時間','時間','time'])), end_time:toStr(pick(r,['結束時間','end_time'])),
+      outline:toStr(pick(r,['大綱','outline'])), summary:toStr(pick(r,['概要內容','概要說明','summary'])),
+      music:toStr(pick(r,['音樂','music'])), screen:toStr(pick(r,['投影幕','screen'])),
+      props:toStr(pick(r,['道具','props'])), note:toStr(pick(r,['備註','note'])), order:toNum(r.order)
     };
   }
   function normalizeVendorRow(r){
     return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), category:toStr(r.category), name:toStr(r.name), contact:toStr(r.contact), phone:toStr(r.phone), line:toStr(r.LINE !== undefined ? r.LINE : r.line), arrival:toStr(r.arrival), note:toStr(r.note),
       staff_count:toStr(r['工作人員人數']), meat_count:toStr(r['葷食']), veg_count:toStr(r['素食']), dietary_restriction:toStr(r['飲食禁忌']), order:toNum(r.order)};
   }
+  function normalizePaymentRow(r){
+    return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), name:toStr(r.name), role:toStr(r.role), amount:toStr(r.amount), pay_method:toStr(r.pay_method), pay_label:toStr(r.pay_label),
+      when:toStr(r.when), when_label:toStr(r.when_label), contact:toStr(r.contact !== undefined ? r.contact : r.Contact), note:toStr(r.note), flag:toBool(r.flag), confirmed:toBool(r.confirmed), order:toNum(r.order)};
+  }
+  function normalizePropRow(r){ return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), name:toStr(r.name), done:toBool(r.done), order:toNum(r.order)}; }
+  function normalizeGalleryRow(r){ return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), category:toStr(r.category), title:toStr(r.title), url:toStr(r.url), note:toStr(r.note), order:toNum(r.order)}; }
+  NORMALIZE = {Checklist:normalizeChecklistRow, Itinerary:normalizeItinRow, Vendors:normalizeVendorRow, Payments:normalizePaymentRow, Props:normalizePropRow, Gallery:normalizeGalleryRow};
 
-  // ================= 檢核表 =================
+  // ================= 檢核表（依場次） =================
   function getPhaseDueDate(phase){
     var m = (phase || '').match(/(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
-    if(m) return m[1] + '-' + pad(+m[2]) + '-' + pad(+m[3]);
-    if((phase||'').indexOf('當天') !== -1) return EVENTS['0327'].date;
-    return null;
+    return m ? m[1] + '-' + pad(+m[2]) + '-' + pad(+m[3]) : null;
   }
   function formatRelative(dueStr){
     var diff = daysUntil(dueStr);
@@ -774,36 +993,31 @@ var CHECKLIST_TEMPLATE = [
     return '';
   }
 
+  var bulkBusy = false;
   document.getElementById('replaceChecklistBtn').addEventListener('click', async function(){
-    if(!isConfigured || !loadedOnce){ alert('還沒連上試算表，或資料還在讀取中，請稍候再試。'); return; }
-    if(bulkBusy) return;
-    if(!confirm('這會刪除試算表中目前全部 ' + state.Checklist.length + ' 個檢核項目，換成這對新人的 ' + CHECKLIST_TEMPLATE.length + ' 個預設項目。確定要取代嗎？')) return;
+    if(isConfigured && !loadedOnce){ alert('資料還在讀取中，請稍候再試。'); return; }
+    if(bulkBusy || seedingNow) return;
+    if(!confirm('這會刪除試算表中目前全部 ' + state.Checklist.length + ' 個檢核項目（兩場都會），換成預設的 ' + CHECKLIST_TEMPLATE.length + ' 個項目。確定要重設嗎？')) return;
     bulkBusy = true;
     var btn = this; btn.disabled = true;
     var old = state.Checklist.slice();
-    var fresh = CHECKLIST_TEMPLATE.map(function(t, idx){
-      return {id:newId('c'), phase:t[0], category:t[1], text:t[2], done:false, desc:t[3], ref_link:'', file_link:'', order:idx+1};
-    });
-    state.Checklist = fresh;
+    var rows = checklistSeedRows();
+    state.Checklist = rows.map(normalizeChecklistRow);
     renderChecklist(); updateProgress();
-    var total = old.length + fresh.length, n = 0, failed = 0;
+    var failed = 0;
     for(var i=0;i<old.length;i++){
-      setSyncStatus('正在更新試算表… ' + (++n) + ' / ' + total + '（請勿關閉頁面）');
+      setSyncStatus('正在清除舊項目… ' + (i+1) + ' / ' + old.length + '（請勿關閉頁面）');
       if(!(await postAction({action:'delete', sheet:'Checklist', id:old[i].id}))) failed++;
     }
-    for(var j=0;j<fresh.length;j++){
-      var it = fresh[j];
-      setSyncStatus('正在更新試算表… ' + (++n) + ' / ' + total + '（請勿關閉頁面）');
-      if(!(await postAction({action:'add', sheet:'Checklist', fields:{id:it.id, phase:it.phase, category:it.category, text:it.text, done:'FALSE', desc:it.desc, ref_link:'', file_link:'', order:it.order}}))) failed++;
-    }
+    if(isConfigured && !(await seedSheet('Checklist','ALL', rows))) failed++;
     bulkBusy = false; btn.disabled = false;
-    if(failed){ setSyncStatus('⚠️ 有 ' + failed + ' 筆沒有同步成功，請點「重新整理」確認試算表內容。', true); }
-    else { await loadAll(false); }
+    if(failed) setSyncStatus('⚠️ 有部分項目沒有同步成功，請點「重新整理」確認試算表內容。', true);
+    else if(isConfigured) await loadAll(false);
   });
 
   function updateProgress(){
-    var total = state.Checklist.length;
-    var done = state.Checklist.filter(function(i){ return i.done; }).length;
+    var items = forEvent(state.Checklist);
+    var total = items.length, done = items.filter(function(i){ return i.done; }).length;
     var pct = total ? Math.round(done/total*100) : 0;
     document.getElementById('progressPct').textContent = pct + '%（' + done + '/' + total + '）';
     document.getElementById('progressFill').style.width = pct + '%';
@@ -816,15 +1030,11 @@ var CHECKLIST_TEMPLATE = [
       groups[it.phase].push(it);
     });
     order.forEach(function(p){
-      groups[p].sort(function(a,b){
-        var d = (a.done?1:0) - (b.done?1:0);
-        return d !== 0 ? d : a.order - b.order;
-      });
+      groups[p].sort(function(a,b){ var d = (a.done?1:0) - (b.done?1:0); return d !== 0 ? d : a.order - b.order; });
     });
     var list = order.map(function(p){ return {phase:p, items:groups[p]}; });
     list.sort(function(a,b){
-      var ad = a.items.length && a.items.every(function(i){ return i.done; });
-      var bd = b.items.length && b.items.every(function(i){ return i.done; });
+      var ad = a.items.every(function(i){ return i.done; }), bd = b.items.every(function(i){ return i.done; });
       return ad === bd ? 0 : (ad ? 1 : -1);
     });
     return list;
@@ -835,26 +1045,26 @@ var CHECKLIST_TEMPLATE = [
   function renderChecklist(){
     var container = document.getElementById('checklistContainer');
     container.innerHTML = '';
-    if(state.Checklist.length === 0){
-      container.innerHTML = '<div class="phase-block"><div class="seed-box">目前還沒有檢核項目。連上試算表後，點下方「改用這對新人的預設時程」就能一次帶入。</div></div>';
+    var items = forEvent(state.Checklist);
+    if(items.length === 0){
+      container.innerHTML = '<div class="phase-block"><div class="seed-box">' + (loadedOnce ? '正在準備 ' + esc(evName()) + ' 的檢核項目…' : '正在讀取…') + '</div></div>';
       return;
     }
-    groupByPhase(state.Checklist).forEach(function(group){
+    groupByPhase(items).forEach(function(group){
       var block = document.createElement('div');
       var doneCount = group.items.filter(function(i){ return i.done; }).length;
       block.className = 'phase-block' + (doneCount === group.items.length ? ' all-done' : '');
       var head = document.createElement('div');
       head.className = 'phase-head';
       var due = getPhaseDueDate(group.phase);
-      var dueLabel = due ? '<span class="phase-due">' + formatRelative(due) + '</span>' : '';
-      head.innerHTML = '<span><span class="phase-title">' + esc(group.phase) + '</span>' + dueLabel + '</span><span class="phase-count">' + doneCount + ' / ' + group.items.length + '</span>';
+      head.innerHTML = '<span><span class="phase-title">' + esc(group.phase) + '</span>' + (due ? '<span class="phase-due">' + formatRelative(due) + '</span>' : '') +
+        '</span><span class="phase-count">' + doneCount + ' / ' + group.items.length + '</span>';
       block.appendChild(head);
 
       group.items.forEach(function(item){
         var status = taskStatus(item);
         var row = document.createElement('div');
         row.className = 'task-row' + (item.done ? ' done' : '') + (status ? ' status-' + status : '');
-
         var cb = document.createElement('input');
         cb.type = 'checkbox'; cb.checked = item.done; cb.setAttribute('aria-label', item.text);
         cb.addEventListener('change', function(){
@@ -863,16 +1073,12 @@ var CHECKLIST_TEMPLATE = [
         });
         var cat = document.createElement('input');
         cat.type = 'text'; cat.className = 'task-category'; cat.placeholder = '分類'; cat.value = item.category || '';
-        cat.addEventListener('change', function(){
-          item.category = cat.value;
-          postAction({action:'update', sheet:'Checklist', id:item.id, fields:{category:item.category}});
-        });
+        cat.addEventListener('change', function(){ item.category = cat.value; postAction({action:'update', sheet:'Checklist', id:item.id, fields:{category:item.category}}); });
         var txt = document.createElement('input');
         txt.type = 'text'; txt.className = 'task-text'; txt.value = item.text;
-        txt.addEventListener('change', function(){
-          item.text = txt.value;
-          postAction({action:'update', sheet:'Checklist', id:item.id, fields:{text:item.text}});
-        });
+        txt.addEventListener('change', function(){ item.text = txt.value; postAction({action:'update', sheet:'Checklist', id:item.id, fields:{text:item.text}}); });
+        row.appendChild(cb); row.appendChild(cat); row.appendChild(txt);
+        if(!item.event){ var sh = document.createElement('span'); sh.className = 'shared-tag'; sh.textContent = '兩場共用'; row.appendChild(sh); }
         var del = document.createElement('button');
         del.className = 'task-del'; del.textContent = '刪除';
         del.addEventListener('click', function(){
@@ -880,12 +1086,11 @@ var CHECKLIST_TEMPLATE = [
           renderChecklist(); updateProgress();
           postAction({action:'delete', sheet:'Checklist', id:item.id});
         });
-        row.appendChild(cb); row.appendChild(cat); row.appendChild(txt); row.appendChild(del);
+        row.appendChild(del);
 
         var meta = document.createElement('div');
         meta.className = 'task-meta-row' + (status ? ' status-' + status : '');
         var descOpen = !!descEditorOpenMap[item.id];
-
         if(item.desc && !descOpen){
           var d = document.createElement('span');
           d.className = 'task-desc-inline'; d.textContent = item.desc; d.title = '點一下修改說明';
@@ -902,20 +1107,13 @@ var CHECKLIST_TEMPLATE = [
           meta.appendChild(di);
           setTimeout(function(){ di.focus(); }, 0);
         }
-
         if(linkEditorOpen[item.id]){
           var ri = document.createElement('input');
           ri.type = 'text'; ri.placeholder = '參考資料連結…'; ri.value = item.ref_link || '';
-          ri.addEventListener('change', function(){
-            item.ref_link = ri.value;
-            postAction({action:'update', sheet:'Checklist', id:item.id, fields:{ref_link:item.ref_link}});
-          });
+          ri.addEventListener('change', function(){ item.ref_link = ri.value; postAction({action:'update', sheet:'Checklist', id:item.id, fields:{ref_link:item.ref_link}}); });
           var fi = document.createElement('input');
           fi.type = 'text'; fi.placeholder = '上傳檔案連結…'; fi.value = item.file_link || '';
-          fi.addEventListener('change', function(){
-            item.file_link = fi.value;
-            postAction({action:'update', sheet:'Checklist', id:item.id, fields:{file_link:item.file_link}});
-          });
+          fi.addEventListener('change', function(){ item.file_link = fi.value; postAction({action:'update', sheet:'Checklist', id:item.id, fields:{file_link:item.file_link}}); });
           var doneBtn = document.createElement('button');
           doneBtn.className = 'task-link-edit-toggle'; doneBtn.textContent = '完成';
           doneBtn.addEventListener('click', function(){ delete linkEditorOpen[item.id]; renderChecklist(); });
@@ -948,17 +1146,16 @@ var CHECKLIST_TEMPLATE = [
       var ac = document.createElement('input');
       ac.type = 'text'; ac.placeholder = '分類（選填）'; ac.style.maxWidth = '120px';
       var ai = document.createElement('input');
-      ai.type = 'text'; ai.placeholder = '新增這個階段的項目…';
+      ai.type = 'text'; ai.placeholder = '新增 ' + evName() + ' 這個階段的項目…';
       var abtn = document.createElement('button');
       abtn.className = 'btn-ink'; abtn.textContent = '新增';
       abtn.addEventListener('click', function(){
         var val = ai.value.trim();
         if(!val) return;
-        var maxOrder = state.Checklist.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
-        var it = {id:newId('c'), phase:group.phase, category:ac.value.trim(), text:val, done:false, desc:'', ref_link:'', file_link:'', order:maxOrder+1};
+        var it = {id:newId('c'), event:currentEvent, phase:group.phase, category:ac.value.trim(), text:val, done:false, desc:'', ref_link:'', file_link:'', order:maxOrder(state.Checklist)+1};
         state.Checklist.push(it);
         renderChecklist(); updateProgress();
-        postAction({action:'add', sheet:'Checklist', fields:{id:it.id, phase:it.phase, category:it.category, text:it.text, done:'FALSE', desc:'', ref_link:'', file_link:'', order:it.order}});
+        postAction({action:'add', sheet:'Checklist', fields:{id:it.id, event:it.event, phase:it.phase, category:it.category, text:it.text, done:'FALSE', desc:'', ref_link:'', file_link:'', order:it.order}});
       });
       ai.addEventListener('keydown', function(e){ if(e.key === 'Enter') abtn.click(); });
       addRow.appendChild(ac); addRow.appendChild(ai); addRow.appendChild(abtn);
@@ -969,8 +1166,11 @@ var CHECKLIST_TEMPLATE = [
 
   // ================= 當天流程 =================
   var ITIN_SHEET_COL = {time:'開始時間', end_time:'結束時間', outline:'大綱', summary:'概要內容', music:'音樂', screen:'投影幕', props:'道具', note:'備註'};
+  function itinFields(row){
+    return {id:row.id, event:row.event, '開始時間':row.time, '結束時間':row.end_time, '大綱':row.outline, '概要內容':row.summary, '音樂':row.music, '投影幕':row.screen, '道具':row.props, '備註':row.note, order:row.order};
+  }
 
-  function makeItinCell(row, field, placeholder){
+  function makeEditableCell(row, field, placeholder, sheet, colMap, onChanged, multiline){
     var td = document.createElement('td');
     var cell = document.createElement('div');
     cell.className = 'cell'; cell.contentEditable = 'true';
@@ -979,48 +1179,32 @@ var CHECKLIST_TEMPLATE = [
     cell.addEventListener('focus', function(){ cell.classList.remove('empty'); });
     cell.addEventListener('blur', function(){
       var val = cell.textContent.trim();
-      if(val === (row[field] || '')){ if(!val && placeholder) cell.classList.add('empty'); return; }
-      row[field] = val;
       if(!val && placeholder) cell.classList.add('empty');
-      var f = {}; f[ITIN_SHEET_COL[field] || field] = val;
-      postAction({action:'update', sheet:'Itinerary', id:row.id, fields:f});
-      if(field === 'props') renderPropsChecklist();
+      if(val === (row[field] || '')) return;
+      row[field] = val;
+      var f = {}; f[colMap[field] || field] = val;
+      postAction({action:'update', sheet:sheet, id:row.id, fields:f});
+      if(onChanged) onChanged(field, val, cell);
     });
-    cell.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' && field !== 'summary' && field !== 'note'){ e.preventDefault(); cell.blur(); }
-    });
+    cell.addEventListener('keydown', function(e){ if(e.key === 'Enter' && !multiline){ e.preventDefault(); cell.blur(); } });
     td.appendChild(cell);
     return td;
-  }
-
-  function itinFields(row){
-    return {id:row.id, event:row.event, '開始時間':row.time, '結束時間':row.end_time, '大綱':row.outline, '概要內容':row.summary, '音樂':row.music, '投影幕':row.screen, '道具':row.props, '備註':row.note, order:row.order};
-  }
-
-  var seeding = false;
-  async function seedDefaultItinerary(){
-    if(seeding) return;
-    seeding = true;
-    var k = currentEvent;
-    var base = state.Itinerary.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
-    var rows = DEFAULT_ITINERARY[k].map(function(d, idx){
-      return {id:newId('i'), event:k, time:d.time, end_time:d.end_time, outline:d.outline, summary:d.summary, music:d.music, screen:d.screen, props:d.props, note:d.note, order:base+idx+1};
-    });
-    rows.forEach(function(r){ state.Itinerary.push(r); });
-    renderItin(); renderPropsChecklist();
-    for(var i=0;i<rows.length;i++){ await postAction({action:'add', sheet:'Itinerary', fields:itinFields(rows[i])}); }
-    seeding = false;
   }
 
   document.getElementById('replaceItinBtn').addEventListener('click', async function(){
     if(isConfigured && !loadedOnce){ alert('資料還在讀取中，請稍候再試。'); return; }
     var k = currentEvent;
     var old = state.Itinerary.filter(function(r){ return r.event === k; });
-    if(!confirm('這會刪除 ' + evName(k) + ' 目前 ' + old.length + ' 個流程項目，改成預設流程草案。另一場不受影響。確定要取代嗎？')) return;
+    if(!confirm('這會刪除 ' + evName(k) + ' 目前 ' + old.length + ' 個流程項目，改成預設流程草案。另一場不受影響。確定嗎？')) return;
+    bulkBusy = true;
     state.Itinerary = state.Itinerary.filter(function(r){ return r.event !== k; });
-    renderItin();
+    var rows = itinSeedRows(k, maxOrder(state.Itinerary));
+    state.Itinerary = state.Itinerary.concat(rows.map(normalizeItinRow));
+    renderItin(); renderPropsChecklist();
     for(var i=0;i<old.length;i++){ await postAction({action:'delete', sheet:'Itinerary', id:old[i].id}); }
-    await seedDefaultItinerary();
+    if(isConfigured) await seedSheet('Itinerary', k, rows);
+    bulkBusy = false;
+    if(isConfigured) loadAll(true);
   });
 
   function renderItin(){
@@ -1028,29 +1212,18 @@ var CHECKLIST_TEMPLATE = [
     tbody.innerHTML = '';
     var rows = forEvent(state.Itinerary).sort(function(a,b){ return a.order - b.order; });
     if(rows.length === 0){
-      var tr0 = document.createElement('tr');
-      var td0 = document.createElement('td');
-      td0.colSpan = 9;
-      var outline = DEFAULT_ITINERARY[currentEvent].map(function(d){ return d.outline; }).join(' → ');
-      td0.innerHTML = '<div class="seed-box">' + esc(evName()) + ' 還沒有流程項目。<br>可以一鍵帶入草案：' + esc(outline) + '，再逐項修改。<br></div>';
-      var sb = document.createElement('button');
-      sb.className = 'btn-ink'; sb.textContent = '帶入 ' + evName() + ' 流程草案';
-      sb.disabled = isConfigured && !loadedOnce;
-      sb.addEventListener('click', seedDefaultItinerary);
-      td0.firstChild.appendChild(sb);
-      tr0.appendChild(td0); tbody.appendChild(tr0);
+      tbody.innerHTML = '<tr><td colspan="9"><div class="seed-box">' + (loadedOnce ? '正在準備 ' + esc(evName()) + ' 的流程草案…' : '正在讀取…') + '</div></td></tr>';
       return;
     }
     rows.forEach(function(row){
       var tr = document.createElement('tr');
-      var t1 = makeItinCell(row,'time','開始'); t1.firstChild.classList.add('itin-time-cell'); tr.appendChild(t1);
-      var t2 = makeItinCell(row,'end_time','結束'); t2.firstChild.classList.add('itin-time-cell'); tr.appendChild(t2);
-      var t3 = makeItinCell(row,'outline','大綱…'); t3.firstChild.classList.add('itin-process-cell'); tr.appendChild(t3);
-      tr.appendChild(makeItinCell(row,'summary','概要內容…'));
-      tr.appendChild(makeItinCell(row,'music','音樂…'));
-      tr.appendChild(makeItinCell(row,'screen','投影幕…'));
-      tr.appendChild(makeItinCell(row,'props','道具…'));
-      tr.appendChild(makeItinCell(row,'note','備註…'));
+      function c(f, ph, cls, ml){
+        var td = makeEditableCell(row, f, ph, 'Itinerary', ITIN_SHEET_COL, function(field){ if(field === 'props') renderPropsChecklist(); }, ml);
+        if(cls) td.firstChild.classList.add(cls);
+        tr.appendChild(td);
+      }
+      c('time','開始','itin-time-cell'); c('end_time','結束','itin-time-cell'); c('outline','大綱…','itin-process-cell');
+      c('summary','概要內容…','',true); c('music','音樂…'); c('screen','投影幕…'); c('props','道具…'); c('note','備註…','',true);
       var dtd = document.createElement('td'); dtd.className = 'del-col';
       var del = document.createElement('button');
       del.className = 'row-del'; del.textContent = '刪除';
@@ -1065,8 +1238,7 @@ var CHECKLIST_TEMPLATE = [
   }
 
   document.getElementById('addItinBtn').addEventListener('click', function(){
-    var maxOrder = state.Itinerary.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
-    var row = {id:newId('i'), event:currentEvent, time:'', end_time:'', outline:'', summary:'', music:'', screen:'', props:'', note:'', order:maxOrder+1};
+    var row = {id:newId('i'), event:currentEvent, time:'', end_time:'', outline:'', summary:'', music:'', screen:'', props:'', note:'', order:maxOrder(state.Itinerary)+1};
     state.Itinerary.push(row);
     renderItin(); renderPropsChecklist();
     postAction({action:'add', sheet:'Itinerary', fields:itinFields(row)});
@@ -1090,15 +1262,11 @@ var CHECKLIST_TEMPLATE = [
   document.getElementById('exportExcelBtn').addEventListener('click', exportItinExcel);
   document.getElementById('exportPdfBtn').addEventListener('click', function(){ window.print(); });
 
-  // ---------- 道具核對清單（分場） ----------
-  function normalizePropRow(r){ return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), name:toStr(r.name), done:toBool(r.done), order:toNum(r.order)}; }
+  // ---------- 道具核對清單 ----------
   function extractPropsList(){
     var names = [];
     forEvent(state.Itinerary).forEach(function(row){
-      (row.props || '').split(/[、,，\/／\n]+/).forEach(function(p){
-        var n = p.trim();
-        if(n && names.indexOf(n) === -1) names.push(n);
-      });
+      (row.props || '').split(/[、,，\/／\n]+/).forEach(function(p){ var n = p.trim(); if(n && names.indexOf(n) === -1) names.push(n); });
     });
     return names;
   }
@@ -1107,20 +1275,18 @@ var CHECKLIST_TEMPLATE = [
            state.Props.find(function(p){ return p.name === name && !p.event; });
   }
   var propsAddRequested = {};
-
   function renderPropsChecklist(){
     var names = extractPropsList();
     var listEl = document.getElementById('propsList');
     var block = document.getElementById('propsChecklist');
     if(names.length === 0){ block.style.display = 'none'; return; }
     block.style.display = 'block';
-    if(!isConfigured || loadedOnce){
+    if(loadedOnce && !seedingNow){
       names.forEach(function(name){
         var key = currentEvent + '|' + name;
         if(!findPropByName(name) && !propsAddRequested[key]){
           propsAddRequested[key] = true;
-          var maxOrder = state.Props.reduce(function(m,p){ return Math.max(m,p.order); }, 0);
-          var np = {id:newId('pr'), event:currentEvent, name:name, done:false, order:maxOrder+1};
+          var np = {id:newId('pr'), event:currentEvent, name:name, done:false, order:maxOrder(state.Props)+1};
           state.Props.push(np);
           postAction({action:'add', sheet:'Props', fields:{id:np.id, event:np.event, name:np.name, done:'FALSE', order:np.order}});
         }
@@ -1129,12 +1295,12 @@ var CHECKLIST_TEMPLATE = [
     listEl.innerHTML = '';
     names.forEach(function(name){
       var prop = findPropByName(name);
-      if(!prop) return;
       var lab = document.createElement('label');
-      lab.className = 'props-item' + (prop.done ? ' done' : '');
+      lab.className = 'props-item' + (prop && prop.done ? ' done' : '');
       var cb = document.createElement('input');
-      cb.type = 'checkbox'; cb.checked = prop.done;
+      cb.type = 'checkbox'; cb.checked = !!(prop && prop.done); cb.disabled = !prop;
       cb.addEventListener('change', function(){
+        if(!prop) return;
         prop.done = cb.checked; lab.classList.toggle('done', cb.checked);
         postAction({action:'update', sheet:'Props', id:prop.id, fields:{done: prop.done ? 'TRUE' : 'FALSE'}});
       });
@@ -1143,52 +1309,148 @@ var CHECKLIST_TEMPLATE = [
     });
   }
 
-  // ================= 廠商聯繫清單（分場） =================
+  // ================= 造型照片 =================
+  var galFilter = '全部';
+  var lightboxOpen = false, lbList = [], lbIndex = 0;
+  function driveId(u){
+    var m = u.match(/\/d\/([\w-]{20,})/) || u.match(/[?&]id=([\w-]{20,})/);
+    return (m && /drive\.google|docs\.google|googleusercontent/.test(u)) ? m[1] : null;
+  }
+  function imgSrc(u, big){
+    u = (u || '').trim();
+    var id = driveId(u);
+    if(id) return 'https://drive.google.com/thumbnail?id=' + id + '&sz=' + (big ? 'w2000' : 'w800');
+    return u;
+  }
+  (function(){
+    var sel = document.querySelector('#galForm select[name=category]');
+    GALLERY_CATS.forEach(function(c){ var o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+  })();
+
+  function galleryItems(){ return forEvent(state.Gallery).sort(function(a,b){ return a.order - b.order; }); }
+
+  function renderGallery(){
+    var all = galleryItems();
+    var fbox = document.getElementById('galFilters');
+    fbox.innerHTML = '';
+    var cats = ['全部'].concat(GALLERY_CATS.filter(function(c){ return all.some(function(i){ return i.category === c; }); }));
+    all.forEach(function(i){ if(i.category && cats.indexOf(i.category) === -1) cats.push(i.category); });
+    if(cats.indexOf(galFilter) === -1) galFilter = '全部';
+    cats.forEach(function(c){
+      var b = document.createElement('button');
+      b.className = 'gal-filter';
+      b.setAttribute('aria-pressed', c === galFilter ? 'true' : 'false');
+      var n = c === '全部' ? all.length : all.filter(function(i){ return i.category === c; }).length;
+      b.innerHTML = esc(c) + '<span class="n">' + n + '</span>';
+      b.addEventListener('click', function(){ galFilter = c; renderGallery(); });
+      fbox.appendChild(b);
+    });
+    var items = galFilter === '全部' ? all : all.filter(function(i){ return i.category === galFilter; });
+    var grid = document.getElementById('galGrid');
+    grid.innerHTML = '';
+    if(all.length === 0){
+      grid.className = '';
+      var tips = currentEvent === '0306'
+        ? ['一進 Classic Jo 白紗', '二進 類旗袍', '拍照與送客的 vissi', '新娘妝髮參考（避開高馬尾、厚重大側分）', '媽媽們的妝髮與服裝', '插花週記的花藝構想']
+        : ['一進 vissi', '二進＋送客 vissi', '派對感的妝髮參考', '後院的花藝構想', '拍貼機與遊戲道具的參考'];
+      grid.innerHTML = '<div class="gal-empty"><b>' + esc(evName()) + ' 還沒有照片。</b>用下方表單貼上連結就能加進來，建議先放：<ul>' +
+        tips.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
+      return;
+    }
+    grid.className = 'gal-grid';
+    items.forEach(function(it, idx){
+      var b = document.createElement('button');
+      b.className = 'gal-item'; b.type = 'button';
+      var im = document.createElement('img');
+      im.loading = 'lazy'; im.alt = it.title || it.category; im.src = imgSrc(it.url, false);
+      im.addEventListener('error', function(){
+        var x = document.createElement('div');
+        x.className = 'gal-broken';
+        x.textContent = '圖片打不開：如果是雲端硬碟的照片，請把分享設定改成「知道連結的任何人」。';
+        im.replaceWith(x);
+      });
+      var cap = document.createElement('div');
+      cap.className = 'gal-cap';
+      cap.innerHTML = (it.category ? '<span class="cat">' + esc(it.category) + '</span>' : '') + esc(it.title) + (!it.event ? ' <span class="shared-tag">兩場共用</span>' : '');
+      b.appendChild(im); b.appendChild(cap);
+      b.addEventListener('click', function(){ openLightbox(items, idx); });
+      grid.appendChild(b);
+    });
+  }
+
+  document.getElementById('galForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f = e.target;
+    var url = f.url.value.trim();
+    if(!url) return;
+    var it = {id:newId('g'), event: f.scope.value === 'both' ? '' : currentEvent, category:f.category.value, title:f.title.value.trim(), url:url, note:'', order:maxOrder(state.Gallery)+1};
+    state.Gallery.push(it);
+    galFilter = '全部';
+    renderGallery();
+    postAction({action:'add', sheet:'Gallery', fields:{id:it.id, event:it.event, category:it.category, title:it.title, url:it.url, note:'', order:it.order}});
+    f.url.value = ''; f.title.value = '';
+  });
+
+  var lb = document.getElementById('lightbox'), lbImg = document.getElementById('lbImg'), lastFocus = null;
+  function showLb(){
+    var it = lbList[lbIndex];
+    lbImg.src = imgSrc(it.url, true);
+    lbImg.alt = it.title || it.category;
+    document.getElementById('lbCap').innerHTML = esc(it.title || '') + '<small>' + esc(it.category) + '・' + (lbIndex+1) + ' / ' + lbList.length + '</small>';
+    document.getElementById('lbOpen').href = it.url;
+    var multi = lbList.length > 1;
+    document.getElementById('lbPrev').style.display = multi ? '' : 'none';
+    document.getElementById('lbNext').style.display = multi ? '' : 'none';
+  }
+  function openLightbox(list, idx){
+    lbList = list; lbIndex = idx; lastFocus = document.activeElement;
+    showLb(); lb.classList.add('open'); lightboxOpen = true;
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lbClose').focus();
+  }
+  function closeLightbox(){
+    lb.classList.remove('open'); lightboxOpen = false;
+    document.body.style.overflow = '';
+    if(lastFocus) lastFocus.focus();
+  }
+  function stepLb(d){ lbIndex = (lbIndex + d + lbList.length) % lbList.length; showLb(); }
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbPrev').addEventListener('click', function(){ stepLb(-1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ stepLb(1); });
+  lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', function(e){
+    if(!lightboxOpen) return;
+    if(e.key === 'Escape') closeLightbox();
+    else if(e.key === 'ArrowLeft') stepLb(-1);
+    else if(e.key === 'ArrowRight') stepLb(1);
+  });
+  (function(){
+    var x0 = null;
+    lb.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+    lb.addEventListener('touchend', function(e){
+      if(x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0;
+      if(Math.abs(dx) > 50) stepLb(dx > 0 ? -1 : 1);
+      x0 = null;
+    });
+  })();
+  document.getElementById('lbDelete').addEventListener('click', function(){
+    var it = lbList[lbIndex];
+    if(!confirm('要刪除「' + (it.title || '這張照片') + '」嗎？')) return;
+    state.Gallery = state.Gallery.filter(function(g){ return g.id !== it.id; });
+    postAction({action:'delete', sheet:'Gallery', id:it.id});
+    closeLightbox(); renderGallery();
+  });
+
+  // ================= 廠商聯繫清單 =================
   var VENDOR_SHEET_COL = {line:'LINE', staff_count:'工作人員人數', meat_count:'葷食', veg_count:'素食', dietary_restriction:'飲食禁忌'};
   var VENDOR_MUTED_FIELDS = {staff_count:1, meat_count:1, veg_count:1, dietary_restriction:1};
   var MUTED_A = /^\s*(不用|不需要?|不必)(準備|填寫|填|了|提供|供餐|用餐|餐點|安排|預留|訂|餐)?\s*[。.!！]?\s*$/;
   var MUTED_B = /^\s*(無|免|沒有|n\/?a|[-－—–]+)\s*[。.!！]?\s*$/i;
   function isMutedValue(v){ var t = String(v == null ? '' : v); return MUTED_A.test(t) || MUTED_B.test(t); }
-
   function vendorFields(row){
     return {id:row.id, event:row.event, category:row.category, name:row.name, contact:row.contact, phone:row.phone, LINE:row.line, arrival:row.arrival, note:row.note,
       '工作人員人數':row.staff_count, '葷食':row.meat_count, '素食':row.veg_count, '飲食禁忌':row.dietary_restriction, order:row.order};
-  }
-
-  function makeVendorCell(row, field, placeholder){
-    var td = document.createElement('td');
-    var cell = document.createElement('div');
-    cell.className = 'cell'; cell.contentEditable = 'true';
-    cell.textContent = row[field] || '';
-    if(!row[field] && placeholder){ cell.classList.add('empty'); cell.dataset.placeholder = placeholder; }
-    if(VENDOR_MUTED_FIELDS[field] && isMutedValue(row[field])) cell.classList.add('muted-value');
-    cell.addEventListener('focus', function(){ cell.classList.remove('empty'); });
-    cell.addEventListener('blur', function(){
-      var val = cell.textContent.trim();
-      if(val === (row[field] || '')){ if(!val && placeholder) cell.classList.add('empty'); return; }
-      row[field] = val;
-      if(!val && placeholder) cell.classList.add('empty');
-      cell.classList.toggle('muted-value', !!(VENDOR_MUTED_FIELDS[field] && isMutedValue(val)));
-      var f = {}; f[VENDOR_SHEET_COL[field] || field] = val;
-      postAction({action:'update', sheet:'Vendors', id:row.id, fields:f});
-    });
-    cell.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); cell.blur(); } });
-    td.appendChild(cell);
-    return td;
-  }
-
-  async function seedVendors(){
-    if(seeding) return;
-    seeding = true;
-    var k = currentEvent;
-    var base = state.Vendors.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
-    var rows = DEFAULT_VENDORS[k].map(function(d, idx){
-      return {id:newId('v'), event:k, category:d.category, name:d.name, contact:'', phone:'', line:'', arrival:'', note:d.note, staff_count:'', meat_count:'', veg_count:'', dietary_restriction:'', order:base+idx+1};
-    });
-    rows.forEach(function(r){ state.Vendors.push(r); });
-    renderVendors();
-    for(var i=0;i<rows.length;i++){ await postAction({action:'add', sheet:'Vendors', fields:vendorFields(rows[i])}); }
-    seeding = false;
   }
 
   function renderVendors(){
@@ -1196,22 +1458,19 @@ var CHECKLIST_TEMPLATE = [
     tbody.innerHTML = '';
     var rows = forEvent(state.Vendors).sort(function(a,b){ return a.order - b.order; });
     if(rows.length === 0){
-      var tr0 = document.createElement('tr'), td0 = document.createElement('td');
-      td0.colSpan = 12;
-      var names = DEFAULT_VENDORS[currentEvent].map(function(v){ return v.category + ' ' + v.name; }).join('、');
-      td0.innerHTML = '<div class="seed-box">' + esc(evName()) + ' 還沒有廠商資料。<br>可以一鍵帶入簡報裡的廠商：' + esc(names) + '。<br></div>';
-      var sb = document.createElement('button');
-      sb.className = 'btn-ink'; sb.textContent = '帶入 ' + evName() + ' 廠商';
-      sb.disabled = isConfigured && !loadedOnce;
-      sb.addEventListener('click', seedVendors);
-      td0.firstChild.appendChild(sb);
-      tr0.appendChild(td0); tbody.appendChild(tr0);
+      tbody.innerHTML = '<tr><td colspan="12"><div class="seed-box">' + (loadedOnce ? '正在準備 ' + esc(evName()) + ' 的廠商資料…' : '正在讀取…') + '</div></td></tr>';
       return;
     }
     rows.forEach(function(row){
       var tr = document.createElement('tr');
       [['category','類別'],['name','廠商名稱'],['contact','聯絡人'],['phone','電話'],['line','LINE ID'],['arrival','到場時間'],['staff_count','人數'],['meat_count','葷食'],['veg_count','素食'],['dietary_restriction','飲食禁忌'],['note','備註']]
-        .forEach(function(c){ tr.appendChild(makeVendorCell(row, c[0], c[1])); });
+        .forEach(function(c){
+          var td = makeEditableCell(row, c[0], c[1], 'Vendors', VENDOR_SHEET_COL, function(field, val, cell){
+            cell.classList.toggle('muted-value', !!(VENDOR_MUTED_FIELDS[field] && isMutedValue(val)));
+          });
+          if(VENDOR_MUTED_FIELDS[c[0]] && isMutedValue(row[c[0]])) td.firstChild.classList.add('muted-value');
+          tr.appendChild(td);
+        });
       var dtd = document.createElement('td');
       var del = document.createElement('button');
       del.className = 'row-del'; del.textContent = '刪除';
@@ -1226,64 +1485,30 @@ var CHECKLIST_TEMPLATE = [
   }
 
   document.getElementById('addVendorBtn').addEventListener('click', function(){
-    var maxOrder = state.Vendors.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
-    var row = {id:newId('v'), event:currentEvent, category:'', name:'', contact:'', phone:'', line:'', arrival:'', note:'', staff_count:'', meat_count:'', veg_count:'', dietary_restriction:'', order:maxOrder+1};
+    var row = {id:newId('v'), event:currentEvent, category:'', name:'', contact:'', phone:'', line:'', arrival:'', note:'', staff_count:'', meat_count:'', veg_count:'', dietary_restriction:'', order:maxOrder(state.Vendors)+1};
     state.Vendors.push(row);
     renderVendors();
     postAction({action:'add', sheet:'Vendors', fields:vendorFields(row)});
   });
 
-  // ================= 廠商尾款（分場） =================
+  // ================= 廠商尾款 =================
   var paymentsUnlocked = false;
-  function normalizePaymentRow(r){
-    return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), name:toStr(r.name), role:toStr(r.role), amount:toStr(r.amount), pay_method:toStr(r.pay_method), pay_label:toStr(r.pay_label),
-      when:toStr(r.when), when_label:toStr(r.when_label), contact:toStr(r.contact !== undefined ? r.contact : r.Contact), note:toStr(r.note), flag:toBool(r.flag), confirmed:toBool(r.confirmed), order:toNum(r.order)};
-  }
   function parseAmount(v){ var n = parseFloat((v||'').toString().replace(/[^0-9.]/g,'')); return isNaN(n) ? null : n; }
-
-  async function seedPayments(){
-    if(seeding) return;
-    seeding = true;
-    var k = currentEvent;
-    var base = state.Payments.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
-    var rows = DEFAULT_PAYMENTS[k].map(function(d, idx){
-      return {id:newId('p'), event:k, name:d.name, role:d.role, amount:d.amount, pay_method:'cash', pay_label:'現金',
-        when: d.flag ? 'pending' : 'day', when_label: d.flag ? '金額待確認' : '當天付清', contact:'', note:d.note, flag:d.flag, confirmed:false, order:base+idx+1};
-    });
-    rows.forEach(function(r){ state.Payments.push(r); });
-    renderPayments();
-    for(var i=0;i<rows.length;i++){
-      var r = rows[i];
-      await postAction({action:'add', sheet:'Payments', fields:{id:r.id, event:r.event, name:r.name, role:r.role, amount:r.amount, pay_method:r.pay_method, pay_label:r.pay_label,
-        when:r.when, when_label:r.when_label, contact:'', note:r.note, flag: r.flag ? 'TRUE' : 'FALSE', confirmed:'FALSE', order:r.order}});
-    }
-    seeding = false;
-  }
 
   function renderPayments(){
     var rows = forEvent(state.Payments).sort(function(a,b){ return a.order - b.order; });
     var list = document.getElementById('paymentsCardList');
     list.innerHTML = '';
-    var total = rows.reduce(function(s,p){ var n = parseAmount(p.amount); return s + (n || 0); }, 0);
+    var total = rows.reduce(function(s,p){ return s + (parseAmount(p.amount) || 0); }, 0);
     document.getElementById('paymentsTotalAmount').textContent = 'NT$ ' + total.toLocaleString('en-US');
     document.getElementById('paymentsTotalCount').textContent = rows.length;
     var cc = rows.filter(function(p){ return p.confirmed; }).length;
     document.getElementById('paymentsCheckedCount').textContent = cc;
     document.getElementById('paymentsProgressFill').style.width = (rows.length ? Math.round(cc/rows.length*100) : 0) + '%';
-
     if(rows.length === 0){
-      var box = document.createElement('div');
-      box.className = 'payment-card'; box.style.display = 'block';
-      box.innerHTML = '<div class="seed-box">' + esc(evName()) + ' 還沒有尾款資料。<br>可以一鍵帶入依簡報整理的尾款試算（總額扣掉訂金），金額沒確定的會用紅框標出。<br></div>';
-      var sb = document.createElement('button');
-      sb.className = 'btn-ink'; sb.textContent = '帶入 ' + evName() + ' 尾款試算';
-      sb.disabled = isConfigured && !loadedOnce;
-      sb.addEventListener('click', seedPayments);
-      box.firstChild.appendChild(sb);
-      list.appendChild(box);
+      list.innerHTML = '<div class="payment-card" style="display:block;"><div class="seed-box">' + (loadedOnce ? '正在準備 ' + esc(evName()) + ' 的尾款試算…' : '正在讀取…') + '</div></div>';
       return;
     }
-
     rows.forEach(function(p){
       var card = document.createElement('div');
       card.className = 'payment-card' + (p.flag ? ' flagged' : '') + (p.confirmed ? ' confirmed' : '');
@@ -1328,7 +1553,7 @@ var CHECKLIST_TEMPLATE = [
 
   // ---------- 啟動 ----------
   document.body.className = 'ev-' + currentEvent;
-  renderTickets(); applyEventLabels();
+  renderTickets(); renderMilestones(); applyEventLabels(); renderAll();
   loadAll(false);
 })();
 </script>
