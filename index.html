@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>婚禮派對手帖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F3FF;
+    --card:#FFFFFF;
+    --ink:#2D1B4E;
+    --ink-soft:#6B5A88;
+    --line:#D9CFF0;
+    --pink:#FF4F8B;
+    --pink-soft:#FFE1EC;
+    --mint:#22B8A7;
+    --mint-soft:#D4F5F0;
+    --lemon:#FFD23F;
+    --lemon-soft:#FFF4C7;
+    --red:#E0373F;
+    --accent:var(--pink);
+    --accent-soft:var(--pink-soft);
+    --overdue:#FFD9DC;
+    --soon:var(--lemon-soft);
+    --donebg:#EEEAF6;
+  }
+  body.ev-0327{ --accent:var(--mint); --accent-soft:var(--mint-soft); }
+  *{box-sizing:border-box;}
+  html{font-size:16px;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(var(--line) 1.2px, transparent 1.2px);
+    background-size:22px 22px;
+  }
+  h1,h2,h3{margin:0; font-family:'Huninn','Noto Sans TC',sans-serif; font-weight:400; color:var(--ink);}
+  .disp{font-family:'Shrikhand',cursive; font-weight:400;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 24px;}
+  @media (max-width:480px){ .wrap{padding:0 16px;} }
+  button{font-family:inherit; cursor:pointer;}
+  input,textarea{font-family:inherit; color:var(--ink);}
+  :focus-visible{outline:3px solid var(--lemon); outline-offset:2px;}
+
+  /* 珍珠串：分隔線 */
+  .pearls{height:14px; background:radial-gradient(circle at 50% 50%, #fff 0 4px, #E6DCF7 4.5px 5.5px, transparent 6px) 0 0/16px 14px repeat-x; filter:drop-shadow(0 1px 0 rgba(45,27,78,.12));}
+
+  /* ---------- 海報 hero ---------- */
+  header{padding:36px 0 28px;}
+  .poster{display:grid; grid-template-columns:1.25fr 1fr; gap:32px; align-items:start;}
+  @media (max-width:860px){ .poster{grid-template-columns:1fr;} }
+  .kicker{font-size:.95rem; color:var(--ink-soft); font-weight:500;}
+  .kicker b{color:var(--accent); font-weight:700;}
+  header h1{font-size:clamp(2.6rem,8vw,4.6rem); line-height:1.1; margin-top:6px; letter-spacing:.04em;}
+  header h1 .amp{font-family:'Shrikhand',cursive; color:var(--accent); font-size:.8em; padding:0 .12em; display:inline-block; transform:rotate(-8deg);}
+  .tagline{margin-top:10px; font-size:1.05rem; max-width:34em;}
+
+  .players{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px;}
+  @media (max-width:520px){ .players{grid-template-columns:1fr;} }
+  .player{background:var(--card); border:2px solid var(--ink); border-radius:16px; padding:14px 16px; box-shadow:4px 4px 0 var(--ink);}
+  .player .who{display:flex; align-items:baseline; gap:8px;}
+  .player .name{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.35rem;}
+  .player .role{font-size:.78rem; color:var(--ink-soft);}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .chip{font-size:.78rem; padding:2px 10px; border-radius:999px; background:var(--paper); border:1.5px solid var(--line);}
+  .player.groom .chip{border-color:#B6E9E2; background:var(--mint-soft);}
+  .player.bride .chip{border-color:#FFC2D7; background:var(--pink-soft);}
+
+  .milestones{display:flex; gap:0; margin-top:22px; flex-wrap:wrap;}
+  .ms{position:relative; padding:0 18px 0 0; margin-bottom:8px; font-size:.82rem; color:var(--ink-soft);}
+  .ms::after{content:""; position:absolute; right:6px; top:.85em; width:6px; height:6px; border-radius:50%; background:var(--line);}
+  .ms:last-child::after{display:none;}
+  .ms b{display:block; color:var(--ink); font-size:.92rem;}
+  .ms.done b{text-decoration:line-through; text-decoration-color:var(--accent);}
+
+  /* 票根 = 場次切換 */
+  .tickets{display:flex; flex-direction:column; gap:16px;}
+  .ticket{
+    display:grid; grid-template-columns:1fr 112px; text-align:left; padding:0; width:100%;
+    background:var(--card); color:var(--ink); border:2px solid var(--ink); border-radius:18px;
+    box-shadow:5px 5px 0 var(--ink); transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .ticket:hover{transform:translate(-1px,-1px); box-shadow:6px 6px 0 var(--ink);}
+  .ticket[aria-pressed="true"]{transform:rotate(-1.2deg);}
+  .ticket.t0306[aria-pressed="true"]{background:var(--pink); color:#fff;}
+  .ticket.t0327[aria-pressed="true"]{background:var(--mint); color:#fff;}
+  .ticket .main{padding:14px 18px;}
+  .ticket .date{font-family:'Shrikhand',cursive; font-size:2.1rem; line-height:1.05;}
+  .ticket .label{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.3rem; margin-left:6px;}
+  .ticket .meta{font-size:.82rem; opacity:.85; margin-top:4px;}
+  .ticket .stub{border-left:2px dashed currentColor; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 6px; text-align:center;}
+  .ticket .days{font-family:'Shrikhand',cursive; font-size:2rem; line-height:1;}
+  .ticket .days-l{font-size:.72rem; margin-top:4px;}
+  .ticket .pick{font-size:.72rem; margin-top:6px; padding:1px 8px; border-radius:999px; border:1.5px solid currentColor;}
+  .ticket[aria-pressed="false"] .pick::before{content:"切換到這場";}
+  .ticket[aria-pressed="true"] .pick::before{content:"正在看這場";}
+
+  .progress-box{margin-top:6px; background:var(--card); border:2px solid var(--ink); border-radius:14px; padding:12px 16px;}
+  .progress-label{display:flex; justify-content:space-between; font-size:.85rem; margin-bottom:6px;}
+  .progress-track{height:12px; border-radius:999px; background:var(--paper); border:1.5px solid var(--ink); overflow:hidden;}
+  .progress-fill{height:100%; background:repeating-linear-gradient(-45deg,var(--accent) 0 8px,var(--lemon) 8px 16px); transition:width .4s ease;}
+  .photo-slot img{display:block; width:100%; border-radius:12px; border:2px solid var(--ink); margin-top:14px;}
+
+  /* ---------- tabs ---------- */
+  .tabnav-shell{position:sticky; top:0; z-index:30; background:rgba(247,243,255,.95); backdrop-filter:blur(6px); border-bottom:2px solid var(--ink);}
+  .tabnav{display:flex; gap:8px; max-width:1200px; margin:0 auto; padding:10px 24px; overflow-x:auto; align-items:center;}
+  .tab-btn{background:var(--card); border:2px solid var(--ink); border-radius:999px; padding:6px 16px; font-size:.9rem; color:var(--ink); white-space:nowrap;}
+  .tab-btn.active{background:var(--ink); color:#fff;}
+  .ev-flag{margin-left:auto; white-space:nowrap; font-size:.82rem; padding:4px 12px; border-radius:999px; background:var(--accent); color:#fff; font-weight:700;}
+  .ev-flag.hide{visibility:hidden;}
+
+  .sync-bar{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 0; font-size:.8rem; color:var(--ink-soft);}
+  .sync-bar.error{color:var(--red); font-weight:500;}
+  #refreshBtn{border:1.5px solid var(--ink-soft); border-radius:999px; background:var(--card); padding:3px 14px; font-size:.78rem; color:var(--ink-soft);}
+  #refreshBtn:hover{border-color:var(--accent); color:var(--accent);}
+
+  .panel{display:none; padding:12px 0 60px;}
+  .panel.active{display:block;}
+  .section-head{margin-bottom:20px;}
+  .section-head h2{font-size:1.7rem;}
+  .section-head p{color:var(--ink-soft); margin:6px 0 0; font-size:.92rem; max-width:44em;}
+
+  /* ---------- checklist ---------- */
+  .checklist-legend{display:flex; gap:16px; flex-wrap:wrap; font-size:.8rem; color:var(--ink-soft); margin-bottom:14px;}
+  .legend-dot{display:inline-block; width:12px; height:12px; border-radius:4px; margin-right:6px; vertical-align:-1px; border:1.5px solid var(--ink);}
+  .phase-block{margin-bottom:22px; background:var(--card); border:2px solid var(--ink); border-radius:16px; box-shadow:4px 4px 0 var(--ink); overflow:hidden;}
+  .phase-head{display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 20px; border-bottom:2px solid var(--ink); background:var(--accent-soft); flex-wrap:wrap;}
+  .phase-title{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.1rem;}
+  .phase-due{font-family:'Noto Sans TC',sans-serif; font-size:.78rem; color:var(--ink-soft); margin-left:6px;}
+  .phase-count{font-family:'Shrikhand',cursive; font-size:1rem; color:var(--ink);}
+  .phase-block.all-done .phase-head{background:var(--donebg);}
+  .task-row{display:flex; align-items:center; gap:10px; padding:10px 20px 4px; border-top:1px dashed var(--line); flex-wrap:wrap;}
+  .phase-head + .task-row{border-top:none;}
+  .task-row input[type="checkbox"]{width:20px; height:20px; accent-color:var(--accent); flex:none; cursor:pointer;}
+  .task-category{flex:0 0 84px; width:84px; font-size:.76rem; padding:2px 8px; border:1.5px solid var(--ink); border-radius:999px; background:var(--lemon-soft); color:var(--ink); text-align:center;}
+  .task-text{flex:1 1 220px; min-width:140px; font-size:.95rem; border:none; background:none; padding:4px 2px; border-radius:6px;}
+  .task-text:focus,.task-category:focus{background:var(--paper); outline:none;}
+  .task-row.done .task-text{color:var(--ink-soft); text-decoration:line-through;}
+  .status-overdue{background:var(--overdue);}
+  .status-soon{background:var(--soon);}
+  .status-done{background:var(--donebg);}
+  .task-meta-row{display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:0 20px 10px 50px;}
+  .task-desc-inline{font-size:.82rem; color:var(--ink-soft); cursor:pointer; flex:1 1 auto; min-width:120px;}
+  .task-desc-inline:hover{color:var(--accent);}
+  .task-meta-row input{flex:1 1 200px; min-width:160px; font-size:.82rem; padding:5px 10px; border:1.5px solid var(--line); border-radius:8px; background:var(--card);}
+  a.task-link-open{font-size:.76rem; color:#fff; background:var(--ink); padding:2px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}
+  a.task-link-open:hover{background:var(--accent);}
+  .task-link-edit-toggle{font-size:.74rem; color:var(--ink-soft); background:none; border:1.5px dashed var(--line); border-radius:999px; padding:1px 10px; white-space:nowrap;}
+  .task-link-edit-toggle:hover{border-color:var(--accent); color:var(--accent);}
+  .task-del,.row-del{background:none; border:none; color:var(--ink-soft); font-size:.78rem; text-decoration:underline; white-space:nowrap;}
+  .add-task-row{display:flex; gap:8px; padding:12px 20px; border-top:2px dashed var(--line); flex-wrap:wrap;}
+  .add-task-row input{flex:1; min-width:120px; padding:7px 12px; border:1.5px solid var(--line); border-radius:10px; background:var(--paper); font-size:.88rem;}
+  .btn-ink{padding:8px 18px; background:var(--ink); color:#fff; border:2px solid var(--ink); border-radius:999px; font-size:.86rem; font-weight:500;}
+  .btn-ink:hover{background:var(--accent); border-color:var(--accent);}
+  .btn-ink:disabled{opacity:.45; cursor:default;}
+  .btn-line{padding:6px 16px; border:2px solid var(--ink); border-radius:999px; background:var(--card); color:var(--ink); font-size:.84rem;}
+  .btn-line:hover{background:var(--ink); color:#fff;}
+
+  /* ---------- 場次資訊卡 ---------- */
+  .ev-card{display:flex; flex-wrap:wrap; gap:10px 28px; background:var(--accent-soft); border:2px solid var(--ink); border-radius:16px; padding:14px 20px; margin-bottom:18px; font-size:.9rem;}
+  .ev-card .k{font-size:.76rem; color:var(--ink-soft); display:block;}
+  .ev-card a{color:var(--ink);}
+
+  /* ---------- tables ---------- */
+  .table-wrap{background:var(--card); border:2px solid var(--ink); border-radius:16px; box-shadow:4px 4px 0 var(--ink); overflow-x:auto;}
+  table.sheet{width:100%; border-collapse:collapse; table-layout:fixed;}
+  table.sheet th{text-align:left; font-size:.78rem; color:var(--ink); font-weight:700; padding:12px 10px; border-bottom:2px solid var(--ink); background:var(--accent-soft);}
+  table.sheet td{padding:6px 8px; border-top:1px dashed var(--line); vertical-align:top;}
+  .cell{width:100%; min-height:1.6em; padding:6px; border-radius:6px; font-size:.86rem; white-space:pre-wrap; word-break:break-word; outline:none;}
+  .cell:focus{background:var(--paper); box-shadow:inset 0 0 0 1.5px var(--accent);}
+  .cell.empty::before{content:attr(data-placeholder); color:var(--ink-soft); opacity:.5;}
+  .cell.muted-value{color:var(--ink-soft); opacity:.5;}
+  .itin-time-cell{font-family:'Shrikhand',cursive; font-size:1rem; color:var(--accent); text-align:center;}
+  .itin-process-cell{font-weight:700;}
+  .add-row{padding:14px 0;}
+  .seed-box{padding:30px 20px; text-align:center; color:var(--ink-soft); font-size:.9rem;}
+  .seed-box button{margin-top:12px;}
+  @media (max-width:900px){ .table-wrap table{min-width:1000px;} }
+
+  .tool-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px;}
+  .tool-note{font-size:.78rem; color:var(--ink-soft);}
+
+  .props-checklist{border:2px dashed var(--accent); border-radius:16px; background:var(--card); padding:16px 20px; margin-top:24px;}
+  .props-checklist-head{font-family:'Huninn','Noto Sans TC',sans-serif; font-size:1.15rem;}
+  .props-checklist-sub{font-size:.8rem; color:var(--ink-soft); margin:2px 0 12px;}
+  #propsList{display:flex; flex-wrap:wrap; gap:8px;}
+  .props-item{display:flex; align-items:center; gap:6px; background:var(--paper); border:1.5px solid var(--ink); border-radius:999px; padding:3px 12px; font-size:.86rem; cursor:pointer;}
+  .props-item input{width:15px; height:15px; accent-color:var(--accent);}
+  .props-item.done{background:var(--donebg); border-color:var(--line);}
+  .props-item.done span{color:var(--ink-soft); text-decoration:line-through;}
+
+  /* ---------- payments ---------- */
+  .payments-gate{background:var(--card); border:2px solid var(--ink); border-radius:18px; box-shadow:5px 5px 0 var(--ink); padding:36px 28px; text-align:center; max-width:440px; margin:0 auto;}
+  .payments-gate-text{color:var(--ink-soft); font-size:.92rem; margin:0 0 16px;}
+  .payments-gate-row{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
+  .payments-gate-row input{padding:8px 14px; border:2px solid var(--ink); border-radius:999px; background:var(--paper); font-size:.9rem; width:180px;}
+  .payments-gate-err{color:var(--red); font-size:.82rem; margin-top:12px; display:none;}
+  .payments-content{display:none;}
+  .payments-content.open{display:block;}
+  .payments-summary{background:var(--accent-soft); border:2px solid var(--ink); border-radius:16px; padding:16px 22px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:18px 30px; align-items:center;}
+  .ps-label{font-size:.76rem; color:var(--ink-soft);}
+  .ps-value{font-family:'Shrikhand',cursive; font-size:1.6rem; line-height:1.2;}
+  .ps-value.small{font-size:1.15rem;}
+  .payments-progress-track{height:12px; border-radius:999px; background:#fff; border:1.5px solid var(--ink); margin-top:6px; overflow:hidden;}
+  .payments-progress-fill{height:100%; background:var(--accent); transition:width .3s ease;}
+  .payment-card{background:var(--card); border:2px solid var(--ink); border-radius:14px; padding:14px 18px; margin-bottom:10px; display:grid; grid-template-columns:24px 1fr auto; gap:8px 16px; align-items:start;}
+  .payment-card.flagged{border-color:var(--red); box-shadow:3px 3px 0 var(--red);}
+  .payment-card.confirmed{background:var(--donebg);}
+  .payment-card input[type="checkbox"]{width:20px; height:20px; margin-top:3px; accent-color:var(--accent);}
+  .payment-name{font-weight:700;}
+  .payment-role,.payment-contact{font-size:.8rem; color:var(--ink-soft);}
+  .payment-note{font-size:.78rem; color:var(--red); border:1.5px solid var(--red); border-radius:999px; display:inline-block; padding:0 10px; margin-top:4px;}
+  .payment-amount-block{text-align:right; min-width:120px;}
+  .payment-amount{font-family:'Shrikhand',cursive; font-size:1.15rem; white-space:nowrap;}
+  .payment-badge{display:inline-block; font-size:.7rem; padding:0 8px; margin-top:4px; margin-left:4px; border-radius:999px; border:1.5px solid currentColor;}
+  .payment-badge.cash{color:#168C7F;} .payment-badge.card{color:#B8860B;}
+  .payment-badge.pending{color:var(--red);} .payment-badge.after{color:var(--ink-soft);}
+  @media (max-width:560px){ .payment-card{grid-template-columns:22px 1fr;} .payment-amount-block{grid-column:2/3; text-align:left;} }
+
+  .save-note{font-size:.8rem; color:var(--ink-soft); margin-top:14px;}
+  footer{padding:30px 0 44px; text-align:center; font-size:.82rem; color:var(--ink-soft);}
+  footer .disp{display:block; font-size:1.5rem; color:var(--accent); margin-bottom:2px;}
+
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important;} }
+
+  .print-only{display:none;}
+  @media print{
+    header, .tabnav-shell, .sync-bar, .section-head, .tool-row, .ev-card,
+    .props-checklist, .add-row, .save-note, footer, .row-del, .del-col, .pearls,
+    .panel:not(#panel-itinerary){display:none !important;}
+    #panel-itinerary{display:block !important; padding:0;}
+    .print-only{display:block;}
+    body{background:#fff;}
+    .table-wrap{box-shadow:none;}
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="ev-0306">
+
+<header>
+  <div class="wrap poster">
+    <div>
+      <div class="kicker">兩場午宴，一起來開趴　<b>Wedding Party Tour 2027</b></div>
+      <h1><span id="hGroom">裕煒</span><span class="amp">&amp;</span><span id="hBride">惠婷</span></h1>
+      <p class="tagline">先跟家人吃一頓好的，再找朋友瘋一場。籌備進度、兩場流程、廠商與尾款，都在這一頁。</p>
+
+      <div class="players">
+        <div class="player groom">
+          <div class="who"><span class="name" id="pGroom">張裕煒</span><span class="role">新郎</span></div>
+          <div class="chips" id="cGroom"></div>
+        </div>
+        <div class="player bride">
+          <div class="who"><span class="name" id="pBride">劉惠婷</span><span class="role">新娘</span></div>
+          <div class="chips" id="cBride"></div>
+        </div>
+      </div>
+
+      <div class="milestones" id="milestones"></div>
+    </div>
+
+    <div>
+      <div class="tickets" id="tickets"></div>
+      <div class="progress-box" style="margin-top:16px;">
+        <div class="progress-label"><span>籌備進度</span><span id="progressPct">0%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%;"></div></div>
+      </div>
+      <div class="photo-slot" id="photoSlot"></div>
+    </div>
+  </div>
+</header>
+
+<div class="pearls" aria-hidden="true"></div>
+
+<div class="tabnav-shell">
+  <nav class="tabnav">
+    <button class="tab-btn active" data-tab="checklist">籌備檢核表</button>
+    <button class="tab-btn" data-tab="itinerary">當天流程</button>
+    <button class="tab-btn" data-tab="vendors">廠商聯繫</button>
+    <button class="tab-btn" data-tab="payments">廠商尾款</button>
+    <span class="ev-flag hide" id="evFlag"></span>
+  </nav>
+</div>
+
+<div class="wrap">
+  <div class="sync-bar">
+    <span id="syncStatus">正在連線同步資料…</span>
+    <button id="refreshBtn">↻ 重新整理</button>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="panel active" id="panel-checklist">
+    <div class="section-head">
+      <h2>籌備檢核表</h2>
+      <p>兩場婚宴共用一份清單，依月份排好。完成就打勾，也可以自己新增項目，新人和顧問看到的都是同一份最新進度。</p>
+    </div>
+    <div class="checklist-legend">
+      <span><span class="legend-dot" style="background:var(--overdue);"></span>已逾期</span>
+      <span><span class="legend-dot" style="background:var(--soon);"></span>14 天內到期</span>
+      <span><span class="legend-dot" style="background:var(--donebg);"></span>已完成</span>
+    </div>
+    <div id="checklistContainer"></div>
+    <div class="tool-row" style="margin-top:6px;">
+      <button class="btn-line" id="replaceChecklistBtn">↺ 改用這對新人的預設時程</button>
+      <span class="tool-note">會清除試算表中目前的檢核項目，換成依兩場婚期與 2/6 春節排好的時程</span>
+    </div>
+    <p class="save-note">＊勾選與編輯會即時同步到 Google 試算表（約每 20 秒自動更新，也可以點「重新整理」）。</p>
+  </section>
+
+  <section class="panel" id="panel-itinerary">
+    <div class="section-head">
+      <h2 id="itinTitle">當天流程</h2>
+      <p>上方票根可以切換 3/6 家宴與 3/27 朋友宴。表格直接點就能改時間、內容、音樂、投影、道具與備註，實際時間婚禮前再和總召定案。</p>
+    </div>
+    <div class="ev-card" id="evCardItin"></div>
+    <div class="print-only">
+      <h2 style="margin-bottom:6px;" id="printTitle"></h2>
+      <p style="font-size:.85rem; color:#555; margin-bottom:16px;"><span id="printVenue"></span>　|　資料更新時間：<span id="printUpdatedTime"></span></p>
+    </div>
+    <div class="table-wrap">
+      <table class="sheet">
+        <thead>
+          <tr>
+            <th style="width:7%;">開始</th>
+            <th style="width:7%;">結束</th>
+            <th style="width:13%;">大綱</th>
+            <th style="width:19%;">概要內容</th>
+            <th style="width:12%;">音樂</th>
+            <th style="width:12%;">投影幕</th>
+            <th style="width:13%;">道具</th>
+            <th style="width:13%;">備註</th>
+            <th style="width:56px;" class="del-col"></th>
+          </tr>
+        </thead>
+        <tbody id="itinContainer"></tbody>
+      </table>
+    </div>
+    <div class="add-row"><button class="btn-ink" id="addItinBtn">＋ 新增流程項目</button></div>
+    <div class="tool-row">
+      <button class="btn-line" id="exportExcelBtn">⬇ 下載 Excel</button>
+      <button class="btn-line" id="exportPdfBtn">⬇ 下載 PDF</button>
+      <button class="btn-line" id="replaceItinBtn">↺ 改用這場的預設流程</button>
+      <span class="tool-note" id="itinUpdatedLabel"></span>
+    </div>
+    <div class="props-checklist" id="propsChecklist">
+      <div class="props-checklist-head">道具核對清單</div>
+      <p class="props-checklist-sub">自動整理這一場流程表「道具」欄出現的物品，準備好就打勾。</p>
+      <div id="propsList"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-vendors">
+    <div class="section-head">
+      <h2 id="vendorTitle">廠商聯繫清單</h2>
+      <p>點欄位就能直接編輯。建議婚禮前 1 週補齊每位廠商的到場時間與聯絡窗口。</p>
+    </div>
+    <div class="table-wrap">
+      <table class="sheet">
+        <thead>
+          <tr>
+            <th style="width:8%;">類別</th>
+            <th style="width:12%;">廠商／單位</th>
+            <th style="width:8%;">聯絡人</th>
+            <th style="width:10%;">電話</th>
+            <th style="width:8%;">LINE</th>
+            <th style="width:8%;">到場時間</th>
+            <th style="width:6%;">工作人員</th>
+            <th style="width:5%;">葷食</th>
+            <th style="width:5%;">素食</th>
+            <th style="width:8%;">飲食禁忌</th>
+            <th style="width:16%;">備註</th>
+            <th style="width:56px;"></th>
+          </tr>
+        </thead>
+        <tbody id="vendorTbody"></tbody>
+      </table>
+    </div>
+    <div class="add-row"><button class="btn-ink" id="addVendorBtn">＋ 新增廠商</button></div>
+    <p class="save-note">＊聯絡資訊會即時同步到 Google 試算表，建議定期在試算表裡備份一份。</p>
+  </section>
+
+  <section class="panel" id="panel-payments">
+    <div class="section-head">
+      <h2 id="payTitle">廠商尾款確認</h2>
+      <p>只給新人與顧問確認婚禮當天要付的尾款，請輸入通關密碼查看。</p>
+    </div>
+    <div class="payments-gate" id="paymentsGate">
+      <p class="payments-gate-text">這一頁有金額資訊，請輸入通關密碼。</p>
+      <div class="payments-gate-row">
+        <input type="password" id="paymentsPasscode" placeholder="通關密碼" aria-label="通關密碼">
+        <button class="btn-ink" id="paymentsUnlock">解鎖查看</button>
+      </div>
+      <p class="payments-gate-err" id="paymentsErr">密碼不正確，請再試一次，或向顧問確認密碼。</p>
+    </div>
+    <div class="payments-content" id="paymentsContent">
+      <div class="payments-summary">
+        <div><div class="ps-label">這場尾款總額</div><div class="ps-value" id="paymentsTotalAmount">NT$ 0</div></div>
+        <div><div class="ps-label">已確認</div><div class="ps-value small"><span id="paymentsCheckedCount">0</span> / <span id="paymentsTotalCount">0</span> 項</div></div>
+        <div style="flex:1; min-width:200px;"><div class="ps-label">確認進度</div><div class="payments-progress-track"><div class="payments-progress-fill" id="paymentsProgressFill" style="width:0%;"></div></div></div>
+      </div>
+      <div id="paymentsCardList"></div>
+      <p class="save-note">＊打勾代表已和該廠商確認尾款金額與付款方式，狀態會即時同步到 Google 試算表。紅框是金額還沒確定的項目。</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="pearls" aria-hidden="true"></div>
+<footer><span class="disp">See you at the party!</span>Just.in Wedding 佳時婚禮顧問工作室</footer>
+
+<script>
+/* =========================================================
+   ★ 新人資料設定區：換一組新人時，主要改這裡 ★
+   ========================================================= */
+var CONFIG = {
+  groom: '裕煒', bride: '惠婷',
+  groomFull: '張裕煒', brideFull: '劉惠婷',
+  groomTags: ['病理專家','寵妻魔人','歷史達人','鏟屎官'],
+  brideTags: ['Yogi','通靈少女','愛哭包','大食怪'],
+  milestones: [
+    {date:'2026-09-16', label:'登記・醉月樓午餐'},
+    {date:'2026-11-13', label:'拍婚紗'},
+    {date:'2027-03-06', label:'家宴'},
+    {date:'2027-03-27', label:'朋友宴'}
+  ],
+  appsScriptUrl: 'PASTE_YOUR_APPS_SCRIPT_URL_HERE',   // 貼上新的 Apps Script 部署網址（/exec 結尾）
+  photoUrl: '',                 // 婚紗照網址，留空就不顯示
+  paymentsPasscode: 'party'     // 尾款頁通關密碼，不分大小寫（僅為輕量保護）
+};
+
+/* 兩場婚宴。流程、廠商、尾款、道具都依 event 欄位分場 */
+var EVENTS = {
+  '0306': {key:'0306', label:'家宴', date:'2027-03-06', venue:'台中市役所', venueUrl:'https://gowedding.tw/Store/%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%BD%B9%E6%89%80/',
+           meal:'午宴', tables:'9 桌（女方 6・男方 4，含主桌）', style:'復古、古典／蕾絲、珍珠', dress:'拍照 vissi → 一進 Classic Jo → 二進 類旗袍 → 送客 vissi'},
+  '0327': {key:'0327', label:'朋友宴', date:'2027-03-27', venue:'台中市役所', venueUrl:'https://gowedding.tw/Store/%E5%8F%B0%E4%B8%AD%E5%B8%82%E5%BD%B9%E6%89%80/',
+           meal:'午宴', tables:'8 桌（國小・國中・高中・大學・學生桌）', style:'復古／蕾絲、珍珠', dress:'一進 vissi → 二進＋送客 vissi'}
+};
+var EVENT_KEYS = ['0306','0327'];
+
+/* 各場預設流程草案（時間為草案，依市役所供餐時段調整） */
+var DEFAULT_ITINERARY = {
+  '0306': [
+    {time:'09:30', end_time:'11:00', outline:'新人戶外拍攝', summary:'新娘換上 vissi，在市役所內外拍照', music:'', screen:'', props:'捧花', note:'攝影瓦農，前一晚需訂住宿'},
+    {time:'11:30', end_time:'12:00', outline:'賓客入場', summary:'家人親友簽到、領桌卡入座', music:'輕快背景音樂', screen:'婚紗照輪播', props:'簽名簿、桌卡', note:''},
+    {time:'12:00', end_time:'12:15', outline:'一進・開場', summary:'主持人開場，新人第一次進場', music:'一進音樂', screen:'開場影片', props:'捧花', note:'Classic Jo 白紗'},
+    {time:'12:15', end_time:'12:30', outline:'感謝父母', summary:'主婚人致詞、新人感謝雙方父母', music:'感性背景音樂', screen:'成長照片', props:'麥克風、感謝禮', note:''},
+    {time:'12:30', end_time:'13:10', outline:'開席用餐', summary:'上菜、親友聊天，新人去換第二套', music:'背景音樂', screen:'婚紗照輪播', props:'', note:'新秘換裝約 25 分鐘'},
+    {time:'13:10', end_time:'13:40', outline:'二進・敬酒', summary:'新人換類旗袍進場，逐桌敬酒合照', music:'二進音樂', screen:'', props:'敬酒杯', note:''},
+    {time:'13:40', end_time:'14:00', outline:'送客', summary:'換回 vissi 在門口送客、發喜餅', music:'送客音樂', screen:'', props:'喜餅、送客小物', note:''}
+  ],
+  '0327': [
+    {time:'11:00', end_time:'11:30', outline:'拍貼機開張', summary:'新人先和早到的朋友拍貼', music:'派對歌單', screen:'', props:'拍貼機、拍照道具板', note:'拍貼機廠商待確認'},
+    {time:'11:30', end_time:'12:00', outline:'賓客入場', summary:'朋友簽到入座，拍貼機持續開放', music:'派對歌單', screen:'婚紗照輪播', props:'簽名簿、桌卡', note:''},
+    {time:'12:00', end_time:'12:15', outline:'一進・派對開場', summary:'主持人炒熱氣氛，新人一進', music:'一進音樂', screen:'開場影片', props:'捧花', note:'vissi 第一套'},
+    {time:'12:15', end_time:'12:35', outline:'遊戲 Round 1', summary:'各桌同學分組對抗（國小／國中／高中／大學）', music:'遊戲音效', screen:'遊戲畫面', props:'遊戲道具、小禮物', note:'遊戲內容待和主持人翔翔討論'},
+    {time:'12:35', end_time:'13:15', outline:'開席用餐', summary:'上菜，新人去換第二套', music:'背景音樂', screen:'婚紗照輪播', props:'', note:''},
+    {time:'13:15', end_time:'13:45', outline:'二進・敬酒', summary:'逐桌敬酒合照', music:'二進音樂', screen:'', props:'敬酒杯', note:'vissi 第二套，同造型送客'},
+    {time:'13:45', end_time:'14:00', outline:'遊戲 Round 2／抽獎', summary:'主持人帶抽獎收尾，新人簡短致詞', music:'', screen:'抽獎畫面', props:'抽獎箱、獎品、麥克風', note:''},
+    {time:'14:00', end_time:'14:30', outline:'送客', summary:'新人門口送客、發喜餅', music:'送客音樂', screen:'', props:'喜餅、送客小物', note:''}
+  ]
+};
+
+/* 各場預設廠商（整理自規劃簡報） */
+var DEFAULT_VENDORS = {
+  '0306': [
+    {category:'場地', name:'台中市役所', note:'午宴 9 桌，總額預估 197,901，訂金 30,000'},
+    {category:'主持人', name:'瀚昱', note:'總額 12,000＋車馬費，訂金 2,000'},
+    {category:'花藝', name:'插花週記', note:'約 5 萬'},
+    {category:'攝影', name:'瓦農', note:'訂金 17,500／尾款 40,000，需訂住宿'},
+    {category:'婚紗', name:'Classic Jo', note:'含 vissi／旗袍共四套'},
+    {category:'新秘', name:'Evonne', note:'4 套 32,800＋新郎 2,000，媽媽妝髮人數待確認'},
+    {category:'總召', name:'Justin', note:'13,000'}
+  ],
+  '0327': [
+    {category:'場地', name:'台中市役所', note:'午宴 8 桌，總額 158,312，訂金 31,000'},
+    {category:'主持人', name:'翔翔', note:'總額 16,800＋車馬費，訂金 5,000'},
+    {category:'花藝', name:'後院', note:'訂金 32,000，10 萬現金（待確認）'},
+    {category:'攝影＋錄影', name:'大好良晨', note:'總額 56,000，訂金 10,000'},
+    {category:'婚紗', name:'Vissi', note:'兩套：一進、二進＋送客'},
+    {category:'新秘', name:'Evonne', note:'2 套 26,800＋新郎 2,000'},
+    {category:'總召', name:'Justin', note:'13,000'}
+  ]
+};
+
+/* 各場預設尾款（amount＝當天要付的尾款；flag＝金額還沒確定） */
+var DEFAULT_PAYMENTS = {
+  '0306': [
+    {name:'台中市役所', role:'場地・午宴 9 桌', amount:'167901', note:'依最終桌數結算，此為預估', flag:true},
+    {name:'瀚昱', role:'主持人', amount:'10000', note:'另加車馬費', flag:true},
+    {name:'插花週記', role:'花藝', amount:'50000', note:'訂金未確認，目前填總額', flag:true},
+    {name:'瓦農', role:'攝影', amount:'40000', note:'', flag:false},
+    {name:'Evonne', role:'新秘・4 套＋新郎', amount:'34800', note:'媽媽妝髮另計；已付訂金 10,000 如何扣抵待確認', flag:true},
+    {name:'Justin', role:'總召', amount:'13000', note:'', flag:false}
+  ],
+  '0327': [
+    {name:'台中市役所', role:'場地・午宴 8 桌', amount:'127312', note:'', flag:false},
+    {name:'翔翔', role:'主持人', amount:'11800', note:'另加車馬費', flag:true},
+    {name:'後院', role:'花藝', amount:'68000', note:'10 萬現金扣訂金 32,000？待確認', flag:true},
+    {name:'大好良晨', role:'攝影＋錄影', amount:'46000', note:'', flag:false},
+    {name:'Evonne', role:'新秘・2 套＋新郎', amount:'28800', note:'', flag:false},
+    {name:'Justin', role:'總召', amount:'13000', note:'', flag:false}
+  ]
+};
+
+/* 預設檢核表（依規劃簡報的月份排程，並避開 2027/2/6 春節連假） */
+var CHECKLIST_TEMPLATE = [
+  ['2026/11/10 前（拍婚紗前）','出席名單','統計兩場宴客人數','家宴與朋友宴分開統計，才能確認兩場桌數。'],
+  ['2026/11/10 前（拍婚紗前）','婚紗照','確認 11/13 拍婚紗流程與三個地點','咖啡廳 → 紅帽象／廟東 → 環保公園，攝影 Zoe、新秘 Evonne。'],
+  ['2026/11/10 前（拍婚紗前）','婚紗照','確認三套造型與新郎三套','vissi 魚尾、後生短洋裝、wade 復古。'],
+  ['2026/11/10 前（拍婚紗前）','新秘','和 Evonne 溝通髮型','避開不喜歡的髮型：超級高馬尾、大側分太厚重又梳太高。'],
+  ['2026/11/20 前','喜帖','和芊澐見面討論喜帖設計（11/20）','建築水彩畫風格，選項：水彩市役所／紙本蕾絲。'],
+  ['2026/11/20 前','攝影','預訂 3/6 攝影師瓦農的住宿','瓦農需要住宿，市役所附近先訂好。'],
+  ['2026/12/31 前','喜餅','試吃並選定喜餅','候選：高雄中村文御手作、日出。網友說不用另外印謝卡，用喜餅送就好。'],
+  ['2026/12/31 前','服裝','挑選主婚人服裝','媽媽裝、爸爸西裝。'],
+  ['2026/12/31 前','保養','安排婚前保養','作臉、身體保養排程。'],
+  ['2026/12/31 前','出席名單','發放婚禮表單給賓客','蒐集出席、素食、兒童座椅需求。'],
+  ['2026/12/31 前','喜帖','選定喜帖樣式',''],
+  ['2026/12/31 前','新秘','Evonne 試妝','試妝 5,000，只試妝不試髮：妝髮溝通、妝感嘗試、風格定位。'],
+  ['2027/01/31 前','流程','和兩位主持人討論流程細節','3/6 瀚昱、3/27 翔翔；朋友宴的遊戲要一起規劃。'],
+  ['2027/01/31 前','喜帖','印製喜帖',''],
+  ['2027/01/31 前','小物','採購小禮物與遊戲道具','候選：可愛香皂、漂亮蜂蜜、糖果罐、咖啡。'],
+  ['2027/01/31 前','新秘','確認幾位媽媽要妝髮','目前報價還沒含媽媽妝髮。'],
+  ['2027/01/31 前','朋友宴','預訂拍貼機',''],
+  ['2027/01/31 前','素材','準備兩場的音樂與影片','開場影片、成長照片、婚紗照輪播、各橋段音樂。'],
+  ['2027/02/04 前（春節前）','場地','確認兩場最終菜單','2/6 春節，連假前先和市役所定案。'],
+  ['2027/02/04 前（春節前）','喜帖','寄出喜帖','連假前寄出，賓客才有時間安排 3 月行程。'],
+  ['2027/02/04 前（春節前）','工作人員','安排兩場當日工作人員名單',''],
+  ['2027/02/04 前（春節前）','交通','預訂禮車',''],
+  ['2027/02/04 前（春節前）','出席名單','再次確認兩場桌數',''],
+  ['2027/02/04 前（春節前）','出席名單','排兩場座位表',''],
+  ['2027/03/03 前（家宴前）','場地','和主持人、市役所測試影音','3/6 家宴用的影片、音樂、投影都要實測。'],
+  ['2027/03/03 前（家宴前）','廠商','確認家宴所有廠商細節與流程',''],
+  ['2027/03/03 前（家宴前）','出席名單','敲定家宴最終人數','含素食、兒童座椅。'],
+  ['2027/03/03 前（家宴前）','出席名單','確認家宴桌次與桌卡內容',''],
+  ['2027/03/03 前（家宴前）','廠商尾款','準備家宴尾款現金並分裝','參考「廠商尾款」頁的 3/6 金額。'],
+  ['2027/03/03 前（家宴前）','保養','作臉、身體保養、飲食控管',''],
+  ['2027/03/24 前（朋友宴前）','場地','和主持人測試朋友宴影音與遊戲畫面',''],
+  ['2027/03/24 前（朋友宴前）','出席名單','敲定朋友宴最終人數與桌卡',''],
+  ['2027/03/24 前（朋友宴前）','道具','準備遊戲道具、抽獎獎品',''],
+  ['2027/03/24 前（朋友宴前）','廠商尾款','準備朋友宴尾款現金並分裝','參考「廠商尾款」頁的 3/27 金額。'],
+  ['2027/03/27 朋友宴當天','派對','好好玩一場','剩下的交給總召與團隊。']
+];
+
+(function(){
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function slashDate(s){ return s.replace(/-/g,'/'); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function addDays(d, n){ return new Date(d.getTime() + n*864e5); }
+  function daysUntil(dateStr){
+    var t = new Date(); t.setHours(0,0,0,0);
+    return Math.round((new Date(dateStr + 'T00:00:00') - t) / 864e5);
+  }
+  var WEEK = ['日','一','二','三','四','五','六'];
+  var namesLine = CONFIG.groom + ' & ' + CONFIG.bride;
+
+  // ---------- 目前場次 ----------
+  var currentEvent = (function(){
+    try{ var s = localStorage.getItem('weddingEvent'); if(EVENTS[s]) return s; }catch(e){}
+    for(var i=0;i<EVENT_KEYS.length;i++){ if(daysUntil(EVENTS[EVENT_KEYS[i]].date) >= 0) return EVENT_KEYS[i]; }
+    return EVENT_KEYS[EVENT_KEYS.length-1];
+  })();
+  function ev(){ return EVENTS[currentEvent]; }
+  function evName(k){ var e = EVENTS[k || currentEvent]; return slashDate(e.date).slice(5) + ' ' + e.label; }
+
+  // ---------- 套用新人資料 ----------
+  document.title = namesLine + '・婚禮派對手帖';
+  document.getElementById('hGroom').textContent = CONFIG.groom;
+  document.getElementById('hBride').textContent = CONFIG.bride;
+  document.getElementById('pGroom').textContent = CONFIG.groomFull;
+  document.getElementById('pBride').textContent = CONFIG.brideFull;
+  [['cGroom',CONFIG.groomTags],['cBride',CONFIG.brideTags]].forEach(function(p){
+    var el = document.getElementById(p[0]);
+    p[1].forEach(function(t){ var c = document.createElement('span'); c.className = 'chip'; c.textContent = '#' + t; el.appendChild(c); });
+  });
+  (function(){
+    var el = document.getElementById('milestones');
+    CONFIG.milestones.forEach(function(m){
+      var d = document.createElement('div');
+      d.className = 'ms' + (daysUntil(m.date) < 0 ? ' done' : '');
+      d.innerHTML = '<b>' + esc(m.label) + '</b>' + esc(slashDate(m.date));
+      el.appendChild(d);
+    });
+  })();
+  if(CONFIG.photoUrl){
+    var img = document.createElement('img');
+    img.src = CONFIG.photoUrl; img.alt = CONFIG.groomFull + '與' + CONFIG.brideFull + '的婚紗照';
+    document.getElementById('photoSlot').appendChild(img);
+  }
+
+  // ---------- 票根 ----------
+  function renderTickets(){
+    var box = document.getElementById('tickets');
+    box.innerHTML = '';
+    EVENT_KEYS.forEach(function(k){
+      var e = EVENTS[k], d = daysUntil(e.date), dt = new Date(e.date + 'T00:00:00');
+      var b = document.createElement('button');
+      b.className = 'ticket t' + k;
+      b.setAttribute('aria-pressed', k === currentEvent ? 'true' : 'false');
+      var daysHtml = d > 0 ? '<span class="days">' + d + '</span><span class="days-l">天後開趴</span>'
+                   : d === 0 ? '<span class="days">今天</span><span class="days-l">就是今天</span>'
+                   : '<span class="days">♥</span><span class="days-l">圓滿完成</span>';
+      b.innerHTML = '<div class="main"><span class="date">' + slashDate(e.date).slice(5) + '</span><span class="label">' + esc(e.label) + '</span>' +
+        '<div class="meta">' + e.date.slice(0,4) + '（' + WEEK[dt.getDay()] + '）' + esc(e.venue) + '・' + esc(e.meal) + '</div>' +
+        '<div class="meta">' + esc(e.tables) + '</div></div>' +
+        '<div class="stub">' + daysHtml + '<span class="pick"></span></div>';
+      b.addEventListener('click', function(){ setEvent(k); });
+      box.appendChild(b);
+    });
+  }
+
+  function setEvent(k){
+    currentEvent = k;
+    try{ localStorage.setItem('weddingEvent', k); }catch(e){}
+    document.body.className = 'ev-' + k;
+    renderTickets(); applyEventLabels();
+    renderItin(); renderPropsChecklist(); renderVendors();
+    if(paymentsUnlocked) renderPayments();
+  }
+
+  function applyEventLabels(){
+    var e = ev(), n = evName();
+    document.getElementById('itinTitle').textContent = n + '・當天流程';
+    document.getElementById('vendorTitle').textContent = n + '・廠商聯繫清單';
+    document.getElementById('payTitle').textContent = n + '・廠商尾款確認';
+    document.getElementById('printTitle').textContent = slashDate(e.date) + ' ' + namesLine + ' ' + e.label + '・當天流程';
+    document.getElementById('printVenue').textContent = e.venue + ' ' + e.meal;
+    document.getElementById('evCardItin').innerHTML =
+      '<div><span class="k">場地</span><a href="' + esc(e.venueUrl) + '" target="_blank" rel="noopener">' + esc(e.venue) + '</a>・' + esc(e.meal) + '</div>' +
+      '<div><span class="k">桌數</span>' + esc(e.tables) + '</div>' +
+      '<div><span class="k">風格元素</span>' + esc(e.style) + '</div>' +
+      '<div><span class="k">新娘換裝</span>' + esc(e.dress) + '</div>';
+    var flag = document.getElementById('evFlag');
+    flag.textContent = '正在看：' + n;
+    flag.classList.toggle('hide', document.querySelector('.tab-btn.active').dataset.tab === 'checklist');
+  }
+
+  // ---------- tabs ----------
+  var tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.classList.toggle('active', t === btn); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + btn.dataset.tab); });
+      document.getElementById('evFlag').classList.toggle('hide', btn.dataset.tab === 'checklist');
+    });
+  });
+
+  // ===== Google Apps Script 連線 =====
+  var APPS_SCRIPT_URL = CONFIG.appsScriptUrl;
+  var isConfigured = !!APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_YOUR') !== 0;
+  var syncStatusEl = document.getElementById('syncStatus');
+  var syncBarEl = document.querySelector('.sync-bar');
+  var state = { Checklist: [], Itinerary: [], Vendors: [], Payments: [], Props: [] };
+  var loadedOnce = false;
+
+  function setSyncStatus(text, isError){ syncStatusEl.textContent = text; syncBarEl.classList.toggle('error', !!isError); }
+  function toBool(v){ return v === true || v === 'TRUE' || v === 'true' || v === 1 || v === '1'; }
+  function toNum(v){ var n = parseFloat(v); return isNaN(n) ? 0 : n; }
+  function toStr(v){ return (v === undefined || v === null) ? '' : String(v); }
+  function newId(prefix){ return prefix + '-' + Date.now() + '-' + Math.random().toString(36).slice(2,6); }
+  // 舊資料沒有 event 欄位時，兩場都顯示
+  function forEvent(rows){ return rows.filter(function(r){ return !r.event || r.event === currentEvent; }); }
+  // 試算表可能把 0306 存成 306，這裡補回 4 碼
+  function eventCode(v){ v = toStr(v).replace(/\D/g,''); if(!v) return ''; return v.length >= 4 ? v.slice(-4) : v.padStart(4,'0'); }
+
+  var lastSyncTime = null;
+  function updateExportLabels(){
+    document.getElementById('itinUpdatedLabel').textContent = lastSyncTime ? ('資料更新時間：' + lastSyncTime) : '';
+    document.getElementById('printUpdatedTime').textContent = lastSyncTime || '';
+  }
+
+  async function loadAll(silent){
+    if(!isConfigured){
+      setSyncStatus('⚠️ 還沒連上 Google 試算表：請在程式碼上方設定區貼上新的 appsScriptUrl。', true);
+      renderChecklist(); updateProgress(); renderItin(); renderPropsChecklist(); renderVendors();
+      return;
+    }
+    if(!silent) setSyncStatus('正在讀取最新資料…');
+    try{
+      var res = await fetch(APPS_SCRIPT_URL + '?_=' + Date.now());
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      var data = await res.json();
+      state.Checklist = (data.Checklist || []).map(normalizeChecklistRow);
+      state.Itinerary = (data.Itinerary || []).map(normalizeItinRow);
+      state.Vendors = (data.Vendors || []).map(normalizeVendorRow);
+      state.Payments = (data.Payments || []).map(normalizePaymentRow);
+      state.Props = (data.Props || []).map(normalizePropRow);
+      loadedOnce = true;
+      renderChecklist(); updateProgress();
+      renderItin(); renderPropsChecklist();
+      renderVendors();
+      if(paymentsUnlocked) renderPayments();
+      lastSyncTime = new Date().toLocaleString('zh-TW');
+      updateExportLabels();
+      setSyncStatus('已同步（' + new Date().toLocaleTimeString('zh-TW') + '）');
+    }catch(e){
+      console.error('Sync load error', e);
+      setSyncStatus('⚠️ 讀取失敗：請確認 Apps Script 已部署成「任何人皆可存取」，再點「重新整理」。', true);
+    }
+  }
+
+  async function postAction(payload){
+    if(!isConfigured) return null;
+    try{
+      var res = await fetch(APPS_SCRIPT_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload)});
+      var data = await res.json();
+      if(!data.ok) throw new Error(data.error || 'unknown error');
+      return data;
+    }catch(e){
+      console.error('Sync write error', e);
+      setSyncStatus('⚠️ 這筆變更沒有同步成功：檢查網路後點「重新整理」確認狀態。', true);
+      return null;
+    }
+  }
+
+  document.getElementById('refreshBtn').addEventListener('click', function(){ loadAll(false); });
+  var bulkBusy = false;
+  setInterval(function(){
+    if(bulkBusy) return;
+    var a = document.activeElement;
+    var typing = a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable);
+    if(!typing) loadAll(true);
+  }, 20000);
+
+  function pick(r, keys){ for(var i=0;i<keys.length;i++){ if(r[keys[i]] !== undefined) return r[keys[i]]; } return ''; }
+  function normalizeChecklistRow(r){
+    return {id:toStr(r.id), phase:toStr(r.phase), category:toStr(r.category), text:toStr(r.text), done:toBool(r.done), desc:toStr(r.desc), ref_link:toStr(r.ref_link), file_link:toStr(r.file_link), order:toNum(r.order)};
+  }
+  function normalizeItinRow(r){
+    return {
+      id:toStr(r.id), event:eventCode(pick(r,['event','場次'])),
+      time:toStr(pick(r,['開始時間','時間','time'])),
+      end_time:toStr(pick(r,['結束時間','end_time'])),
+      outline:toStr(pick(r,['大綱','outline'])),
+      summary:toStr(pick(r,['概要內容','概要說明','summary'])),
+      music:toStr(pick(r,['音樂','music'])),
+      screen:toStr(pick(r,['投影幕','screen'])),
+      props:toStr(pick(r,['道具','props'])),
+      note:toStr(pick(r,['備註','note'])),
+      order:toNum(r.order)
+    };
+  }
+  function normalizeVendorRow(r){
+    return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), category:toStr(r.category), name:toStr(r.name), contact:toStr(r.contact), phone:toStr(r.phone), line:toStr(r.LINE !== undefined ? r.LINE : r.line), arrival:toStr(r.arrival), note:toStr(r.note),
+      staff_count:toStr(r['工作人員人數']), meat_count:toStr(r['葷食']), veg_count:toStr(r['素食']), dietary_restriction:toStr(r['飲食禁忌']), order:toNum(r.order)};
+  }
+
+  // ================= 檢核表 =================
+  function getPhaseDueDate(phase){
+    var m = (phase || '').match(/(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})/);
+    if(m) return m[1] + '-' + pad(+m[2]) + '-' + pad(+m[3]);
+    if((phase||'').indexOf('當天') !== -1) return EVENTS['0327'].date;
+    return null;
+  }
+  function formatRelative(dueStr){
+    var diff = daysUntil(dueStr);
+    if(diff > 0) return diff >= 45 ? ('還有約 ' + Math.round(diff/30) + ' 個月') : ('還有 ' + diff + ' 天');
+    if(diff === 0) return '就是今天';
+    return '已超過 ' + Math.abs(diff) + ' 天';
+  }
+  function taskStatus(item){
+    if(item.done) return 'done';
+    var due = getPhaseDueDate(item.phase);
+    if(!due) return '';
+    var today = ymd(new Date());
+    if(today > due) return 'overdue';
+    if(today >= ymd(addDays(new Date(due + 'T00:00:00'), -14))) return 'soon';
+    return '';
+  }
+
+  document.getElementById('replaceChecklistBtn').addEventListener('click', async function(){
+    if(!isConfigured || !loadedOnce){ alert('還沒連上試算表，或資料還在讀取中，請稍候再試。'); return; }
+    if(bulkBusy) return;
+    if(!confirm('這會刪除試算表中目前全部 ' + state.Checklist.length + ' 個檢核項目，換成這對新人的 ' + CHECKLIST_TEMPLATE.length + ' 個預設項目。確定要取代嗎？')) return;
+    bulkBusy = true;
+    var btn = this; btn.disabled = true;
+    var old = state.Checklist.slice();
+    var fresh = CHECKLIST_TEMPLATE.map(function(t, idx){
+      return {id:newId('c'), phase:t[0], category:t[1], text:t[2], done:false, desc:t[3], ref_link:'', file_link:'', order:idx+1};
+    });
+    state.Checklist = fresh;
+    renderChecklist(); updateProgress();
+    var total = old.length + fresh.length, n = 0, failed = 0;
+    for(var i=0;i<old.length;i++){
+      setSyncStatus('正在更新試算表… ' + (++n) + ' / ' + total + '（請勿關閉頁面）');
+      if(!(await postAction({action:'delete', sheet:'Checklist', id:old[i].id}))) failed++;
+    }
+    for(var j=0;j<fresh.length;j++){
+      var it = fresh[j];
+      setSyncStatus('正在更新試算表… ' + (++n) + ' / ' + total + '（請勿關閉頁面）');
+      if(!(await postAction({action:'add', sheet:'Checklist', fields:{id:it.id, phase:it.phase, category:it.category, text:it.text, done:'FALSE', desc:it.desc, ref_link:'', file_link:'', order:it.order}}))) failed++;
+    }
+    bulkBusy = false; btn.disabled = false;
+    if(failed){ setSyncStatus('⚠️ 有 ' + failed + ' 筆沒有同步成功，請點「重新整理」確認試算表內容。', true); }
+    else { await loadAll(false); }
+  });
+
+  function updateProgress(){
+    var total = state.Checklist.length;
+    var done = state.Checklist.filter(function(i){ return i.done; }).length;
+    var pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById('progressPct').textContent = pct + '%（' + done + '/' + total + '）';
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function groupByPhase(items){
+    var order = [], groups = {};
+    items.slice().sort(function(a,b){ return a.order - b.order; }).forEach(function(it){
+      if(!groups[it.phase]){ groups[it.phase] = []; order.push(it.phase); }
+      groups[it.phase].push(it);
+    });
+    order.forEach(function(p){
+      groups[p].sort(function(a,b){
+        var d = (a.done?1:0) - (b.done?1:0);
+        return d !== 0 ? d : a.order - b.order;
+      });
+    });
+    var list = order.map(function(p){ return {phase:p, items:groups[p]}; });
+    list.sort(function(a,b){
+      var ad = a.items.length && a.items.every(function(i){ return i.done; });
+      var bd = b.items.length && b.items.every(function(i){ return i.done; });
+      return ad === bd ? 0 : (ad ? 1 : -1);
+    });
+    return list;
+  }
+
+  var linkEditorOpen = {}, descEditorOpenMap = {};
+
+  function renderChecklist(){
+    var container = document.getElementById('checklistContainer');
+    container.innerHTML = '';
+    if(state.Checklist.length === 0){
+      container.innerHTML = '<div class="phase-block"><div class="seed-box">目前還沒有檢核項目。連上試算表後，點下方「改用這對新人的預設時程」就能一次帶入。</div></div>';
+      return;
+    }
+    groupByPhase(state.Checklist).forEach(function(group){
+      var block = document.createElement('div');
+      var doneCount = group.items.filter(function(i){ return i.done; }).length;
+      block.className = 'phase-block' + (doneCount === group.items.length ? ' all-done' : '');
+      var head = document.createElement('div');
+      head.className = 'phase-head';
+      var due = getPhaseDueDate(group.phase);
+      var dueLabel = due ? '<span class="phase-due">' + formatRelative(due) + '</span>' : '';
+      head.innerHTML = '<span><span class="phase-title">' + esc(group.phase) + '</span>' + dueLabel + '</span><span class="phase-count">' + doneCount + ' / ' + group.items.length + '</span>';
+      block.appendChild(head);
+
+      group.items.forEach(function(item){
+        var status = taskStatus(item);
+        var row = document.createElement('div');
+        row.className = 'task-row' + (item.done ? ' done' : '') + (status ? ' status-' + status : '');
+
+        var cb = document.createElement('input');
+        cb.type = 'checkbox'; cb.checked = item.done; cb.setAttribute('aria-label', item.text);
+        cb.addEventListener('change', function(){
+          item.done = cb.checked; renderChecklist(); updateProgress();
+          postAction({action:'update', sheet:'Checklist', id:item.id, fields:{done: item.done ? 'TRUE' : 'FALSE'}});
+        });
+        var cat = document.createElement('input');
+        cat.type = 'text'; cat.className = 'task-category'; cat.placeholder = '分類'; cat.value = item.category || '';
+        cat.addEventListener('change', function(){
+          item.category = cat.value;
+          postAction({action:'update', sheet:'Checklist', id:item.id, fields:{category:item.category}});
+        });
+        var txt = document.createElement('input');
+        txt.type = 'text'; txt.className = 'task-text'; txt.value = item.text;
+        txt.addEventListener('change', function(){
+          item.text = txt.value;
+          postAction({action:'update', sheet:'Checklist', id:item.id, fields:{text:item.text}});
+        });
+        var del = document.createElement('button');
+        del.className = 'task-del'; del.textContent = '刪除';
+        del.addEventListener('click', function(){
+          state.Checklist = state.Checklist.filter(function(i){ return i.id !== item.id; });
+          renderChecklist(); updateProgress();
+          postAction({action:'delete', sheet:'Checklist', id:item.id});
+        });
+        row.appendChild(cb); row.appendChild(cat); row.appendChild(txt); row.appendChild(del);
+
+        var meta = document.createElement('div');
+        meta.className = 'task-meta-row' + (status ? ' status-' + status : '');
+        var descOpen = !!descEditorOpenMap[item.id];
+
+        if(item.desc && !descOpen){
+          var d = document.createElement('span');
+          d.className = 'task-desc-inline'; d.textContent = item.desc; d.title = '點一下修改說明';
+          d.addEventListener('click', function(){ descEditorOpenMap[item.id] = true; renderChecklist(); });
+          meta.appendChild(d);
+        }else if(descOpen){
+          var di = document.createElement('input');
+          di.type = 'text'; di.placeholder = '補充說明給新人看…'; di.value = item.desc || '';
+          di.addEventListener('blur', function(){
+            item.desc = di.value; delete descEditorOpenMap[item.id];
+            postAction({action:'update', sheet:'Checklist', id:item.id, fields:{desc:item.desc}});
+            renderChecklist();
+          });
+          meta.appendChild(di);
+          setTimeout(function(){ di.focus(); }, 0);
+        }
+
+        if(linkEditorOpen[item.id]){
+          var ri = document.createElement('input');
+          ri.type = 'text'; ri.placeholder = '參考資料連結…'; ri.value = item.ref_link || '';
+          ri.addEventListener('change', function(){
+            item.ref_link = ri.value;
+            postAction({action:'update', sheet:'Checklist', id:item.id, fields:{ref_link:item.ref_link}});
+          });
+          var fi = document.createElement('input');
+          fi.type = 'text'; fi.placeholder = '上傳檔案連結…'; fi.value = item.file_link || '';
+          fi.addEventListener('change', function(){
+            item.file_link = fi.value;
+            postAction({action:'update', sheet:'Checklist', id:item.id, fields:{file_link:item.file_link}});
+          });
+          var doneBtn = document.createElement('button');
+          doneBtn.className = 'task-link-edit-toggle'; doneBtn.textContent = '完成';
+          doneBtn.addEventListener('click', function(){ delete linkEditorOpen[item.id]; renderChecklist(); });
+          meta.appendChild(ri); meta.appendChild(fi); meta.appendChild(doneBtn);
+        }else{
+          [['ref_link','🔗 參考資料'],['file_link','📁 檔案']].forEach(function(pair){
+            var url = (item[pair[0]] || '').trim();
+            if(/^https?:\/\//i.test(url)){
+              var a = document.createElement('a');
+              a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.className = 'task-link-open'; a.textContent = pair[1];
+              meta.appendChild(a);
+            }
+          });
+          var eb = document.createElement('button');
+          eb.className = 'task-link-edit-toggle'; eb.textContent = '✎ 編輯連結';
+          eb.addEventListener('click', function(){ linkEditorOpen[item.id] = true; renderChecklist(); });
+          meta.appendChild(eb);
+        }
+        if(!item.desc && !descOpen){
+          var ab = document.createElement('button');
+          ab.className = 'task-link-edit-toggle'; ab.textContent = '✎ 新增說明';
+          ab.addEventListener('click', function(){ descEditorOpenMap[item.id] = true; renderChecklist(); });
+          meta.appendChild(ab);
+        }
+        block.appendChild(row); block.appendChild(meta);
+      });
+
+      var addRow = document.createElement('div');
+      addRow.className = 'add-task-row';
+      var ac = document.createElement('input');
+      ac.type = 'text'; ac.placeholder = '分類（選填）'; ac.style.maxWidth = '120px';
+      var ai = document.createElement('input');
+      ai.type = 'text'; ai.placeholder = '新增這個階段的項目…';
+      var abtn = document.createElement('button');
+      abtn.className = 'btn-ink'; abtn.textContent = '新增';
+      abtn.addEventListener('click', function(){
+        var val = ai.value.trim();
+        if(!val) return;
+        var maxOrder = state.Checklist.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
+        var it = {id:newId('c'), phase:group.phase, category:ac.value.trim(), text:val, done:false, desc:'', ref_link:'', file_link:'', order:maxOrder+1};
+        state.Checklist.push(it);
+        renderChecklist(); updateProgress();
+        postAction({action:'add', sheet:'Checklist', fields:{id:it.id, phase:it.phase, category:it.category, text:it.text, done:'FALSE', desc:'', ref_link:'', file_link:'', order:it.order}});
+      });
+      ai.addEventListener('keydown', function(e){ if(e.key === 'Enter') abtn.click(); });
+      addRow.appendChild(ac); addRow.appendChild(ai); addRow.appendChild(abtn);
+      block.appendChild(addRow);
+      container.appendChild(block);
+    });
+  }
+
+  // ================= 當天流程 =================
+  var ITIN_SHEET_COL = {time:'開始時間', end_time:'結束時間', outline:'大綱', summary:'概要內容', music:'音樂', screen:'投影幕', props:'道具', note:'備註'};
+
+  function makeItinCell(row, field, placeholder){
+    var td = document.createElement('td');
+    var cell = document.createElement('div');
+    cell.className = 'cell'; cell.contentEditable = 'true';
+    cell.textContent = row[field] || '';
+    if(!row[field] && placeholder){ cell.classList.add('empty'); cell.dataset.placeholder = placeholder; }
+    cell.addEventListener('focus', function(){ cell.classList.remove('empty'); });
+    cell.addEventListener('blur', function(){
+      var val = cell.textContent.trim();
+      if(val === (row[field] || '')){ if(!val && placeholder) cell.classList.add('empty'); return; }
+      row[field] = val;
+      if(!val && placeholder) cell.classList.add('empty');
+      var f = {}; f[ITIN_SHEET_COL[field] || field] = val;
+      postAction({action:'update', sheet:'Itinerary', id:row.id, fields:f});
+      if(field === 'props') renderPropsChecklist();
+    });
+    cell.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' && field !== 'summary' && field !== 'note'){ e.preventDefault(); cell.blur(); }
+    });
+    td.appendChild(cell);
+    return td;
+  }
+
+  function itinFields(row){
+    return {id:row.id, event:row.event, '開始時間':row.time, '結束時間':row.end_time, '大綱':row.outline, '概要內容':row.summary, '音樂':row.music, '投影幕':row.screen, '道具':row.props, '備註':row.note, order:row.order};
+  }
+
+  var seeding = false;
+  async function seedDefaultItinerary(){
+    if(seeding) return;
+    seeding = true;
+    var k = currentEvent;
+    var base = state.Itinerary.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
+    var rows = DEFAULT_ITINERARY[k].map(function(d, idx){
+      return {id:newId('i'), event:k, time:d.time, end_time:d.end_time, outline:d.outline, summary:d.summary, music:d.music, screen:d.screen, props:d.props, note:d.note, order:base+idx+1};
+    });
+    rows.forEach(function(r){ state.Itinerary.push(r); });
+    renderItin(); renderPropsChecklist();
+    for(var i=0;i<rows.length;i++){ await postAction({action:'add', sheet:'Itinerary', fields:itinFields(rows[i])}); }
+    seeding = false;
+  }
+
+  document.getElementById('replaceItinBtn').addEventListener('click', async function(){
+    if(isConfigured && !loadedOnce){ alert('資料還在讀取中，請稍候再試。'); return; }
+    var k = currentEvent;
+    var old = state.Itinerary.filter(function(r){ return r.event === k; });
+    if(!confirm('這會刪除 ' + evName(k) + ' 目前 ' + old.length + ' 個流程項目，改成預設流程草案。另一場不受影響。確定要取代嗎？')) return;
+    state.Itinerary = state.Itinerary.filter(function(r){ return r.event !== k; });
+    renderItin();
+    for(var i=0;i<old.length;i++){ await postAction({action:'delete', sheet:'Itinerary', id:old[i].id}); }
+    await seedDefaultItinerary();
+  });
+
+  function renderItin(){
+    var tbody = document.getElementById('itinContainer');
+    tbody.innerHTML = '';
+    var rows = forEvent(state.Itinerary).sort(function(a,b){ return a.order - b.order; });
+    if(rows.length === 0){
+      var tr0 = document.createElement('tr');
+      var td0 = document.createElement('td');
+      td0.colSpan = 9;
+      var outline = DEFAULT_ITINERARY[currentEvent].map(function(d){ return d.outline; }).join(' → ');
+      td0.innerHTML = '<div class="seed-box">' + esc(evName()) + ' 還沒有流程項目。<br>可以一鍵帶入草案：' + esc(outline) + '，再逐項修改。<br></div>';
+      var sb = document.createElement('button');
+      sb.className = 'btn-ink'; sb.textContent = '帶入 ' + evName() + ' 流程草案';
+      sb.disabled = isConfigured && !loadedOnce;
+      sb.addEventListener('click', seedDefaultItinerary);
+      td0.firstChild.appendChild(sb);
+      tr0.appendChild(td0); tbody.appendChild(tr0);
+      return;
+    }
+    rows.forEach(function(row){
+      var tr = document.createElement('tr');
+      var t1 = makeItinCell(row,'time','開始'); t1.firstChild.classList.add('itin-time-cell'); tr.appendChild(t1);
+      var t2 = makeItinCell(row,'end_time','結束'); t2.firstChild.classList.add('itin-time-cell'); tr.appendChild(t2);
+      var t3 = makeItinCell(row,'outline','大綱…'); t3.firstChild.classList.add('itin-process-cell'); tr.appendChild(t3);
+      tr.appendChild(makeItinCell(row,'summary','概要內容…'));
+      tr.appendChild(makeItinCell(row,'music','音樂…'));
+      tr.appendChild(makeItinCell(row,'screen','投影幕…'));
+      tr.appendChild(makeItinCell(row,'props','道具…'));
+      tr.appendChild(makeItinCell(row,'note','備註…'));
+      var dtd = document.createElement('td'); dtd.className = 'del-col';
+      var del = document.createElement('button');
+      del.className = 'row-del'; del.textContent = '刪除';
+      del.addEventListener('click', function(){
+        state.Itinerary = state.Itinerary.filter(function(i){ return i.id !== row.id; });
+        renderItin(); renderPropsChecklist();
+        postAction({action:'delete', sheet:'Itinerary', id:row.id});
+      });
+      dtd.appendChild(del); tr.appendChild(dtd);
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('addItinBtn').addEventListener('click', function(){
+    var maxOrder = state.Itinerary.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
+    var row = {id:newId('i'), event:currentEvent, time:'', end_time:'', outline:'', summary:'', music:'', screen:'', props:'', note:'', order:maxOrder+1};
+    state.Itinerary.push(row);
+    renderItin(); renderPropsChecklist();
+    postAction({action:'add', sheet:'Itinerary', fields:itinFields(row)});
+  });
+
+  function exportItinExcel(){
+    if(typeof XLSX === 'undefined'){ alert('匯出功能沒有載入成功，請檢查網路後重新整理頁面再試一次。'); return; }
+    var e = ev();
+    var rows = forEvent(state.Itinerary).sort(function(a,b){ return a.order - b.order; });
+    var aoa = [
+      [slashDate(e.date) + ' ' + namesLine + ' ' + e.label + '・當天流程（' + e.venue + ' ' + e.meal + '）'],
+      ['資料更新時間：' + (lastSyncTime || '')], [],
+      ['開始時間','結束時間','大綱','概要內容','音樂','投影幕','道具','備註']
+    ].concat(rows.map(function(r){ return [r.time, r.end_time, r.outline, r.summary, r.music, r.screen, r.props, r.note]; }));
+    var ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{wch:8},{wch:8},{wch:16},{wch:30},{wch:16},{wch:16},{wch:20},{wch:30}];
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, e.label + '流程');
+    XLSX.writeFile(wb, e.date.slice(5).replace('-','') + e.label + '流程_' + (lastSyncTime || '').replace(/[\/: ]/g,'') + '.xlsx');
+  }
+  document.getElementById('exportExcelBtn').addEventListener('click', exportItinExcel);
+  document.getElementById('exportPdfBtn').addEventListener('click', function(){ window.print(); });
+
+  // ---------- 道具核對清單（分場） ----------
+  function normalizePropRow(r){ return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), name:toStr(r.name), done:toBool(r.done), order:toNum(r.order)}; }
+  function extractPropsList(){
+    var names = [];
+    forEvent(state.Itinerary).forEach(function(row){
+      (row.props || '').split(/[、,，\/／\n]+/).forEach(function(p){
+        var n = p.trim();
+        if(n && names.indexOf(n) === -1) names.push(n);
+      });
+    });
+    return names;
+  }
+  function findPropByName(name){
+    return state.Props.find(function(p){ return p.name === name && p.event === currentEvent; }) ||
+           state.Props.find(function(p){ return p.name === name && !p.event; });
+  }
+  var propsAddRequested = {};
+
+  function renderPropsChecklist(){
+    var names = extractPropsList();
+    var listEl = document.getElementById('propsList');
+    var block = document.getElementById('propsChecklist');
+    if(names.length === 0){ block.style.display = 'none'; return; }
+    block.style.display = 'block';
+    if(!isConfigured || loadedOnce){
+      names.forEach(function(name){
+        var key = currentEvent + '|' + name;
+        if(!findPropByName(name) && !propsAddRequested[key]){
+          propsAddRequested[key] = true;
+          var maxOrder = state.Props.reduce(function(m,p){ return Math.max(m,p.order); }, 0);
+          var np = {id:newId('pr'), event:currentEvent, name:name, done:false, order:maxOrder+1};
+          state.Props.push(np);
+          postAction({action:'add', sheet:'Props', fields:{id:np.id, event:np.event, name:np.name, done:'FALSE', order:np.order}});
+        }
+      });
+    }
+    listEl.innerHTML = '';
+    names.forEach(function(name){
+      var prop = findPropByName(name);
+      if(!prop) return;
+      var lab = document.createElement('label');
+      lab.className = 'props-item' + (prop.done ? ' done' : '');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = prop.done;
+      cb.addEventListener('change', function(){
+        prop.done = cb.checked; lab.classList.toggle('done', cb.checked);
+        postAction({action:'update', sheet:'Props', id:prop.id, fields:{done: prop.done ? 'TRUE' : 'FALSE'}});
+      });
+      var sp = document.createElement('span'); sp.textContent = name;
+      lab.appendChild(cb); lab.appendChild(sp); listEl.appendChild(lab);
+    });
+  }
+
+  // ================= 廠商聯繫清單（分場） =================
+  var VENDOR_SHEET_COL = {line:'LINE', staff_count:'工作人員人數', meat_count:'葷食', veg_count:'素食', dietary_restriction:'飲食禁忌'};
+  var VENDOR_MUTED_FIELDS = {staff_count:1, meat_count:1, veg_count:1, dietary_restriction:1};
+  var MUTED_A = /^\s*(不用|不需要?|不必)(準備|填寫|填|了|提供|供餐|用餐|餐點|安排|預留|訂|餐)?\s*[。.!！]?\s*$/;
+  var MUTED_B = /^\s*(無|免|沒有|n\/?a|[-－—–]+)\s*[。.!！]?\s*$/i;
+  function isMutedValue(v){ var t = String(v == null ? '' : v); return MUTED_A.test(t) || MUTED_B.test(t); }
+
+  function vendorFields(row){
+    return {id:row.id, event:row.event, category:row.category, name:row.name, contact:row.contact, phone:row.phone, LINE:row.line, arrival:row.arrival, note:row.note,
+      '工作人員人數':row.staff_count, '葷食':row.meat_count, '素食':row.veg_count, '飲食禁忌':row.dietary_restriction, order:row.order};
+  }
+
+  function makeVendorCell(row, field, placeholder){
+    var td = document.createElement('td');
+    var cell = document.createElement('div');
+    cell.className = 'cell'; cell.contentEditable = 'true';
+    cell.textContent = row[field] || '';
+    if(!row[field] && placeholder){ cell.classList.add('empty'); cell.dataset.placeholder = placeholder; }
+    if(VENDOR_MUTED_FIELDS[field] && isMutedValue(row[field])) cell.classList.add('muted-value');
+    cell.addEventListener('focus', function(){ cell.classList.remove('empty'); });
+    cell.addEventListener('blur', function(){
+      var val = cell.textContent.trim();
+      if(val === (row[field] || '')){ if(!val && placeholder) cell.classList.add('empty'); return; }
+      row[field] = val;
+      if(!val && placeholder) cell.classList.add('empty');
+      cell.classList.toggle('muted-value', !!(VENDOR_MUTED_FIELDS[field] && isMutedValue(val)));
+      var f = {}; f[VENDOR_SHEET_COL[field] || field] = val;
+      postAction({action:'update', sheet:'Vendors', id:row.id, fields:f});
+    });
+    cell.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); cell.blur(); } });
+    td.appendChild(cell);
+    return td;
+  }
+
+  async function seedVendors(){
+    if(seeding) return;
+    seeding = true;
+    var k = currentEvent;
+    var base = state.Vendors.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
+    var rows = DEFAULT_VENDORS[k].map(function(d, idx){
+      return {id:newId('v'), event:k, category:d.category, name:d.name, contact:'', phone:'', line:'', arrival:'', note:d.note, staff_count:'', meat_count:'', veg_count:'', dietary_restriction:'', order:base+idx+1};
+    });
+    rows.forEach(function(r){ state.Vendors.push(r); });
+    renderVendors();
+    for(var i=0;i<rows.length;i++){ await postAction({action:'add', sheet:'Vendors', fields:vendorFields(rows[i])}); }
+    seeding = false;
+  }
+
+  function renderVendors(){
+    var tbody = document.getElementById('vendorTbody');
+    tbody.innerHTML = '';
+    var rows = forEvent(state.Vendors).sort(function(a,b){ return a.order - b.order; });
+    if(rows.length === 0){
+      var tr0 = document.createElement('tr'), td0 = document.createElement('td');
+      td0.colSpan = 12;
+      var names = DEFAULT_VENDORS[currentEvent].map(function(v){ return v.category + ' ' + v.name; }).join('、');
+      td0.innerHTML = '<div class="seed-box">' + esc(evName()) + ' 還沒有廠商資料。<br>可以一鍵帶入簡報裡的廠商：' + esc(names) + '。<br></div>';
+      var sb = document.createElement('button');
+      sb.className = 'btn-ink'; sb.textContent = '帶入 ' + evName() + ' 廠商';
+      sb.disabled = isConfigured && !loadedOnce;
+      sb.addEventListener('click', seedVendors);
+      td0.firstChild.appendChild(sb);
+      tr0.appendChild(td0); tbody.appendChild(tr0);
+      return;
+    }
+    rows.forEach(function(row){
+      var tr = document.createElement('tr');
+      [['category','類別'],['name','廠商名稱'],['contact','聯絡人'],['phone','電話'],['line','LINE ID'],['arrival','到場時間'],['staff_count','人數'],['meat_count','葷食'],['veg_count','素食'],['dietary_restriction','飲食禁忌'],['note','備註']]
+        .forEach(function(c){ tr.appendChild(makeVendorCell(row, c[0], c[1])); });
+      var dtd = document.createElement('td');
+      var del = document.createElement('button');
+      del.className = 'row-del'; del.textContent = '刪除';
+      del.addEventListener('click', function(){
+        state.Vendors = state.Vendors.filter(function(i){ return i.id !== row.id; });
+        renderVendors();
+        postAction({action:'delete', sheet:'Vendors', id:row.id});
+      });
+      dtd.appendChild(del); tr.appendChild(dtd);
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('addVendorBtn').addEventListener('click', function(){
+    var maxOrder = state.Vendors.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
+    var row = {id:newId('v'), event:currentEvent, category:'', name:'', contact:'', phone:'', line:'', arrival:'', note:'', staff_count:'', meat_count:'', veg_count:'', dietary_restriction:'', order:maxOrder+1};
+    state.Vendors.push(row);
+    renderVendors();
+    postAction({action:'add', sheet:'Vendors', fields:vendorFields(row)});
+  });
+
+  // ================= 廠商尾款（分場） =================
+  var paymentsUnlocked = false;
+  function normalizePaymentRow(r){
+    return {id:toStr(r.id), event:eventCode(pick(r,['event','場次'])), name:toStr(r.name), role:toStr(r.role), amount:toStr(r.amount), pay_method:toStr(r.pay_method), pay_label:toStr(r.pay_label),
+      when:toStr(r.when), when_label:toStr(r.when_label), contact:toStr(r.contact !== undefined ? r.contact : r.Contact), note:toStr(r.note), flag:toBool(r.flag), confirmed:toBool(r.confirmed), order:toNum(r.order)};
+  }
+  function parseAmount(v){ var n = parseFloat((v||'').toString().replace(/[^0-9.]/g,'')); return isNaN(n) ? null : n; }
+
+  async function seedPayments(){
+    if(seeding) return;
+    seeding = true;
+    var k = currentEvent;
+    var base = state.Payments.reduce(function(m,i){ return Math.max(m,i.order); }, 0);
+    var rows = DEFAULT_PAYMENTS[k].map(function(d, idx){
+      return {id:newId('p'), event:k, name:d.name, role:d.role, amount:d.amount, pay_method:'cash', pay_label:'現金',
+        when: d.flag ? 'pending' : 'day', when_label: d.flag ? '金額待確認' : '當天付清', contact:'', note:d.note, flag:d.flag, confirmed:false, order:base+idx+1};
+    });
+    rows.forEach(function(r){ state.Payments.push(r); });
+    renderPayments();
+    for(var i=0;i<rows.length;i++){
+      var r = rows[i];
+      await postAction({action:'add', sheet:'Payments', fields:{id:r.id, event:r.event, name:r.name, role:r.role, amount:r.amount, pay_method:r.pay_method, pay_label:r.pay_label,
+        when:r.when, when_label:r.when_label, contact:'', note:r.note, flag: r.flag ? 'TRUE' : 'FALSE', confirmed:'FALSE', order:r.order}});
+    }
+    seeding = false;
+  }
+
+  function renderPayments(){
+    var rows = forEvent(state.Payments).sort(function(a,b){ return a.order - b.order; });
+    var list = document.getElementById('paymentsCardList');
+    list.innerHTML = '';
+    var total = rows.reduce(function(s,p){ var n = parseAmount(p.amount); return s + (n || 0); }, 0);
+    document.getElementById('paymentsTotalAmount').textContent = 'NT$ ' + total.toLocaleString('en-US');
+    document.getElementById('paymentsTotalCount').textContent = rows.length;
+    var cc = rows.filter(function(p){ return p.confirmed; }).length;
+    document.getElementById('paymentsCheckedCount').textContent = cc;
+    document.getElementById('paymentsProgressFill').style.width = (rows.length ? Math.round(cc/rows.length*100) : 0) + '%';
+
+    if(rows.length === 0){
+      var box = document.createElement('div');
+      box.className = 'payment-card'; box.style.display = 'block';
+      box.innerHTML = '<div class="seed-box">' + esc(evName()) + ' 還沒有尾款資料。<br>可以一鍵帶入依簡報整理的尾款試算（總額扣掉訂金），金額沒確定的會用紅框標出。<br></div>';
+      var sb = document.createElement('button');
+      sb.className = 'btn-ink'; sb.textContent = '帶入 ' + evName() + ' 尾款試算';
+      sb.disabled = isConfigured && !loadedOnce;
+      sb.addEventListener('click', seedPayments);
+      box.firstChild.appendChild(sb);
+      list.appendChild(box);
+      return;
+    }
+
+    rows.forEach(function(p){
+      var card = document.createElement('div');
+      card.className = 'payment-card' + (p.flag ? ' flagged' : '') + (p.confirmed ? ' confirmed' : '');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox'; cb.checked = p.confirmed; cb.setAttribute('aria-label', p.name + ' 尾款已確認');
+      cb.addEventListener('change', function(){
+        p.confirmed = cb.checked; renderPayments();
+        postAction({action:'update', sheet:'Payments', id:p.id, fields:{confirmed: p.confirmed ? 'TRUE' : 'FALSE'}});
+      });
+      var mid = document.createElement('div');
+      mid.innerHTML = '<div class="payment-name">' + esc(p.name) + '</div>' +
+        (p.role ? '<div class="payment-role">' + esc(p.role) + '</div>' : '') +
+        (p.contact ? '<div class="payment-contact">' + esc(p.contact).replace(/\|/g,'　') + '</div>' : '') +
+        (p.note ? '<div class="payment-note">' + esc(p.note) + '</div>' : '');
+      var right = document.createElement('div');
+      right.className = 'payment-amount-block';
+      var amt = parseAmount(p.amount);
+      var payCls = p.pay_method === 'card' ? 'card' : 'cash';
+      var whenCls = p.when === 'pending' ? 'pending' : (p.when === 'after' ? 'after' : 'cash');
+      right.innerHTML = '<div class="payment-amount">' + (amt !== null && p.amount ? 'NT$ ' + amt.toLocaleString('en-US') : '－') + '</div><div>' +
+        (p.pay_label ? '<span class="payment-badge ' + payCls + '">' + esc(p.pay_label) + '</span>' : '') +
+        (p.when_label ? '<span class="payment-badge ' + whenCls + '">' + esc(p.when_label) + '</span>' : '') + '</div>';
+      card.appendChild(cb); card.appendChild(mid); card.appendChild(right);
+      list.appendChild(card);
+    });
+  }
+
+  var passInput = document.getElementById('paymentsPasscode');
+  function tryUnlockPayments(){
+    if(passInput.value.trim().toLowerCase() === String(CONFIG.paymentsPasscode).toLowerCase()){
+      paymentsUnlocked = true;
+      renderPayments();
+      document.getElementById('paymentsGate').style.display = 'none';
+      document.getElementById('paymentsContent').classList.add('open');
+      document.getElementById('paymentsErr').style.display = 'none';
+    }else{
+      document.getElementById('paymentsErr').style.display = 'block';
+    }
+  }
+  document.getElementById('paymentsUnlock').addEventListener('click', tryUnlockPayments);
+  passInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') tryUnlockPayments(); });
+
+  // ---------- 啟動 ----------
+  document.body.className = 'ev-' + currentEvent;
+  renderTickets(); applyEventLabels();
+  loadAll(false);
+})();
+</script>
+</body>
+</html>
